@@ -38,9 +38,6 @@
         });
     </script>
     <style>
-        body{
-            font-size: 14px;
-        }
         .signup {
             float: none !important;
             margin: auto;
@@ -51,6 +48,9 @@
         }
         #small-dialog3, #small-dialog{
             text-align: left;
+        }
+        nav {
+            font-size: 14px;
         }
     </style>
     <script>
@@ -476,18 +476,16 @@
             <img src="/IStudy/Public/images/lines.png" alt="" />
         </div>
         <div class="clearfix"> </div>
-    </div>
+    </div><!--  移动端显示-->
     <div class="drop-navigation drop-navigation">
         <ul class="nav nav-sidebar">
-            <li class="active"><a href="index.html" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
-            <li><a href="shows.html" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>TV Shows</a></li>
-            <li><a href="history.html" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>History</a></li>
-            <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>Movies<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+            <li class="active"><a href="index.html" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
+            <li><a href="shows.html" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>我的课程</a></li>
+            <?php if(($_SESSION['category']) == "2"): ?><li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
             <ul class="cl-effect-2">
-                <li><a href="movies.html">English</a></li>
-                <li><a href="movies.html">Chinese</a></li>
-                <li><a href="movies.html">Hindi</a></li>
-            </ul>
+                <li><a href="/IStudy/index.php/Home/Index/newCourse">开设新课程</a></li>
+                <li><a href="movies.html">管理已有课程</a></li>
+            </ul><?php endif; ?>
             <!-- script-for-menu -->
             <script>
                 $( "li a.menu1" ).click(function() {

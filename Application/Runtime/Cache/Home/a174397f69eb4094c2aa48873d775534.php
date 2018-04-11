@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,20 +7,20 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 
     <!-- css start-->
-    <link href="__PUBLIC__/css/bootstrap.css" rel="stylesheet" type='text/css' media="all" />
-    <link href="__PUBLIC__/css/dashboard.css" rel="stylesheet">
-    <link href="__PUBLIC__/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="__PUBLIC__/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="__PUBLIC__/css/toastr.min.css" rel="stylesheet">
-    <link href="__PUBLIC__/plugins/nice-validator/jquery.validator.css" rel="stylesheet">
+    <link href="/IStudy/Public/css/bootstrap.css" rel="stylesheet" type='text/css' media="all" />
+    <link href="/IStudy/Public/css/dashboard.css" rel="stylesheet">
+    <link href="/IStudy/Public/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/IStudy/Public/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/IStudy/Public/css/toastr.min.css" rel="stylesheet">
+    <link href="/IStudy/Public/plugins/nice-validator/jquery.validator.css" rel="stylesheet">
 
     <!-- js start-->
-    <script src="__PUBLIC__/js/jquery-2.1.4.js"></script>
-    <script src="__PUBLIC__/js/bootstrap.min.js"></script>
-    <script src="__PUBLIC__/js/responsiveslides.min.js"></script>
-    <script src="__PUBLIC__/js/jquery.magnific-popup.js" type="text/javascript"></script>
-    <script src="__PUBLIC__/js/toastr.min.js"></script>
-    <script src="__PUBLIC__/plugins/nice-validator/jquery.validator.min.js?local=zh-CN"></script>
+    <script src="/IStudy/Public/js/jquery-2.1.4.js"></script>
+    <script src="/IStudy/Public/js/bootstrap.min.js"></script>
+    <script src="/IStudy/Public/js/responsiveslides.min.js"></script>
+    <script src="/IStudy/Public/js/jquery.magnific-popup.js" type="text/javascript"></script>
+    <script src="/IStudy/Public/js/toastr.min.js"></script>
+    <script src="/IStudy/Public/plugins/nice-validator/jquery.validator.min.js?local=zh-CN"></script>
     <script>
         $(document).ready(function() {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -78,7 +78,7 @@
             $.validator("#form1", {
                 fields: {
                     username: {
-                        rule: "required; length(6~);remote(get:__APP__/Home/Login/usernameOk)",
+                        rule: "required; length(6~);remote(get:/IStudy/index.php/Home/Login/usernameOk)",
                         msg: {
                             required: "请填写账号",
                             length:"至少填写6位账号",
@@ -121,7 +121,7 @@
                         target: "#nameMsg"
                     },
                     email: {
-                        rule: "required;email; remote(get:__APP__/Home/Login/emailOk)",
+                        rule: "required;email; remote(get:/IStudy/index.php/Home/Login/emailOk)",
                         msg: {
                             required: "请填写邮箱",
                         },
@@ -131,7 +131,7 @@
                         target: "#emailMsg",
                     },
                     verCode: {
-                        rule: "required;remote(get:__APP__/Home/Login/verCodeOk)",
+                        rule: "required;remote(get:/IStudy/index.php/Home/Login/verCodeOk)",
                         msg: {
                             required: "请填写验证码",
                         },
@@ -147,7 +147,7 @@
                 valid: function(form){
                     // 表单验证通过，提交表单
                     $.ajax({
-                        url: "__APP__/Home/Login/addStu",
+                        url: "/IStudy/index.php/Home/Login/addStu",
                         type: "POST",
                         async: true,
                         data: $("#form1").serialize(),
@@ -155,7 +155,7 @@
                             if (data['code'] == 1) {
                                 toastr.success(data['msg'], 'OK');
                                 setTimeout(function() {
-                                    window.location.href = "__APP__/Home";
+                                    window.location.href = "/IStudy/index.php/Home";
                                 }, 2000);
                             } else {
                                 toastr.error(data['msg'], 'ERROR');
@@ -190,7 +190,7 @@
                 },
                 valid: function(form) {
                     $.ajax({
-                        url: "__APP__/Home/Login/login",
+                        url: "/IStudy/index.php/Home/Login/login",
                         type: "POST",
                         async: true,
                         data: $("#form2").serialize(),
@@ -198,7 +198,7 @@
                             if (data['code'] == 1) {
                                 toastr.success(data['msg'], 'OK');
                                 setTimeout(function () {
-                                    window.location.href = "__APP__/Home";
+                                    window.location.href = "/IStudy/index.php/Home";
                                 }, 2000);
                             } else {
                                 toastr.error(data['msg'], 'ERROR');
@@ -212,7 +212,7 @@
              */
             $("#next").click(function(){
                 $.ajax({
-                    url:"__APP__/Home/Login/sendVerCode?email="+$("#email").val(),
+                    url:"/IStudy/index.php/Home/Login/sendVerCode?email="+$("#email").val(),
                     type:"GET",
                     success:function(data) {
                         if(data['code'] == 1){
@@ -226,13 +226,13 @@
 
             $("#loginOut").click(function () {
                 $.ajax({
-                    url: "__APP__/Home/Login/loginOut",
+                    url: "/IStudy/index.php/Home/Login/loginOut",
                     type: "get",
                     success: function (data) {
                         if (data['code'] == 1) {
                             toastr.success(data['msg'], 'OK');
                             setTimeout(function() {
-                                window.location.href = "__APP__/Home";
+                                window.location.href = "/IStudy/index.php/Home";
                             }, 2000);
                         } else {
                             toastr.error(data['msg'], 'ERROR');
@@ -243,7 +243,7 @@
 
         });
     </script>
-    <block name="head"></block>
+    
 </head>
 <body>
 <!-- nav start -->
@@ -257,7 +257,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="index.html"><h1>
-                <img src="__PUBLIC__/images/logo.png" alt="" /></h1></a>
+                <img src="/IStudy/Public/images/logo.png" alt="" /></h1></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">
@@ -267,8 +267,7 @@
                 </form>
             </div>
             <div class="header-top-right">
-                <empty name="Think.session.username">
-                    <!--<div class="file">-->
+                <?php if(empty($_SESSION['username'])): ?><!--<div class="file">-->
                         <!--<a href="upload.html">Upload</a>-->
                     <!--</div>-->
                     <div class="signin">
@@ -278,9 +277,8 @@
                     <div class="signin">
                         <a href="#small-dialog" class="play-icon popup-with-zoom-anim">登录</a>
                     </div>
-                <else />
-                    欢迎,{$Think.session.name},<button id="loginOut">退出</button>
-                </empty>
+                <?php else: ?>
+                    欢迎,<?php echo (session('name')); ?>,<button id="loginOut">退出</button><?php endif; ?>
 
                 <!-- 登录框-->
                 <div id="small-dialog" class="mfp-hide">
@@ -444,7 +442,7 @@
     <div class="top-navigation">
         <div class="t-menu">MENU</div>
         <div class="t-img">
-            <img src="__PUBLIC__/images/lines.png" alt="" />
+            <img src="/IStudy/Public/images/lines.png" alt="" />
         </div>
         <div class="clearfix"> </div>
     </div><!--  移动端显示-->
@@ -452,13 +450,11 @@
         <ul class="nav nav-sidebar">
             <li class="active"><a href="index.html" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
             <li><a href="shows.html" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>我的课程</a></li>
-            <eq name="Think.session.category" value="2">
-            <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+            <?php if(($_SESSION['category']) == "2"): ?><li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
             <ul class="cl-effect-2">
-                <li><a href="__APP__/Home/Index/newCourse">开设新课程</a></li>
+                <li><a href="/IStudy/index.php/Home/Index/newCourse">开设新课程</a></li>
                 <li><a href="movies.html">管理已有课程</a></li>
-            </ul>
-            </eq>
+            </ul><?php endif; ?>
             <!-- script-for-menu -->
             <script>
                 $( "li a.menu1" ).click(function() {
@@ -510,7 +506,56 @@
 <!-- main start-->
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <div class="main-grids">
-    <block name="content"></block>
+    
+    <div class="row">
+        <div class="col-sm-8 col-md-8">
+            <form id="course">
+                <div class="form-group">
+                    <label for="title">课程名</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="课程名不超过50字">
+                    <span class="msg-box" id="titleMsg"></span>
+                </div>
+                <div class="form-group">
+                    <label for="brief">课程简介</label>
+                    <textarea class="form-control" id="brief" name="brief" placeholder="介绍下你的课程吧" high="300px"></textarea>
+                </div>
+            </form>
+        </div>
+        <script>
+            $('#course').validator({
+                fields: {
+                    title: {
+                        rule: "required; length(~50)",
+                        msg: {
+                            required: "课程名必填",
+                        },
+                        ok: "",
+                        timely: 1,
+                        target: "#titleMsg",
+                    },
+                },
+                valid: function(form) {
+                    $.ajax({
+                        url: "/IStudy/index.php/Home/Login/login",
+                        type: "POST",
+                        async: true,
+                        data: $("#course").serialize(),
+                        success: function (data) {
+                            if (data['code'] == 1) {
+                                toastr.success(data['msg'], 'OK');
+                                setTimeout(function () {
+                                    window.location.href = "/IStudy/index.php/Home";
+                                }, 2000);
+                            } else {
+                                toastr.error(data['msg'], 'ERROR');
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+    </div>
+
     </div>
     <!-- footer -->
     <div class="footer">
