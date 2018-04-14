@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="x5-page-mode" content="default">
     <title>111</title>
 
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -21,6 +24,7 @@
     <script src="/IStudy/Public/js/jquery.magnific-popup.js" type="text/javascript"></script>
     <script src="/IStudy/Public/js/toastr.min.js"></script>
     <script src="/IStudy/Public/plugins/nice-validator/jquery.validator.min.js?local=zh-CN"></script>
+
     <script>
         $(document).ready(function() {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -48,9 +52,6 @@
         }
         #small-dialog3, #small-dialog{
             text-align: left;
-        }
-        nav {
-            font-size: 14px;
         }
     </style>
     <script>
@@ -210,34 +211,6 @@
                     });
                 }
             });
-//            $.validator("#form2", {
-//                fields: {
-//                    username: {
-//                        rule: "required",
-//                        msg: {
-//                            required: "请填写账号",
-//                        },
-//                        tip: "用于登录的账号",
-//                        ok: "",
-//                        timely: 1,
-//                        target: "#usernameMsg1",
-//                    },
-//                    password: {
-//                        rule: "密码:required;",
-//                        msg: {
-//                            required: "请填写密码",
-//                        },
-//                        tip: "用于登录的密码",
-//                        ok: "",
-//                        timely: 1,
-//                        target: "#pwdMsg1"
-//                    },
-//                    valid: function(form) {
-//                        // 表单验证通过，提交表单
-//
-//                    }
-//                }
-//            });
             /**
              * 邮箱验证下一步
              */
@@ -479,12 +452,12 @@
     </div><!--  移动端显示-->
     <div class="drop-navigation drop-navigation">
         <ul class="nav nav-sidebar">
-            <li class="active"><a href="index.html" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
-            <li><a href="shows.html" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>我的课程</a></li>
+            <li class="active"><a href="/IStudy/index.php/Home/Index/index" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
+            <li><a href="/IStudy/index.php/Home/Course/allCourse" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>所有课程</a></li>
             <?php if(($_SESSION['category']) == "2"): ?><li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
             <ul class="cl-effect-2">
-                <li><a href="/IStudy/index.php/Home/Index/newCourse">开设新课程</a></li>
-                <li><a href="movies.html">管理已有课程</a></li>
+                <li><a href="/IStudy/index.php/Home/Course/newCourse">开设新课程</a></li>
+                <li><a href="/IStudy/index.php/Home/Course/myCourse?id=<?php echo (session('id')); ?>">管理已有课程</a></li>
             </ul><?php endif; ?>
             <!-- script-for-menu -->
             <script>

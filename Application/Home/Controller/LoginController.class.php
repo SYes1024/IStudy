@@ -112,6 +112,8 @@ class LoginController extends Controller
             if (!$result){
                 $this->ajaxReturn(array('code' => '0', 'msg' => "注册失败"));
             }else{
+                session('id', $result['id']);
+                session('category', 3);
                 session('username', $username);
                 session('name', $name);
                 $this->ajaxReturn(array('code' => '1', 'msg' => "注册成功"));
@@ -132,6 +134,7 @@ class LoginController extends Controller
             $this->ajaxReturn(array('code' => '0', 'msg' => "账号不存在"));
         }
         elseif($password = $result['password']){
+            session('id', $result['id']);
             session('category', $result['category']);
             session('username', $username);
             session('name', $result['name']);

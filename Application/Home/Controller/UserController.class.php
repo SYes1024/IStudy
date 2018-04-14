@@ -8,7 +8,6 @@
 
 namespace Home\Controller;
 
-
 class UserController
 {
 

@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="x5-page-mode" content="default">
     <title>111</title>
 
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -21,6 +24,7 @@
     <script src="__PUBLIC__/js/jquery.magnific-popup.js" type="text/javascript"></script>
     <script src="__PUBLIC__/js/toastr.min.js"></script>
     <script src="__PUBLIC__/plugins/nice-validator/jquery.validator.min.js?local=zh-CN"></script>
+
     <script>
         $(document).ready(function() {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -450,13 +454,13 @@
     </div><!--  移动端显示-->
     <div class="drop-navigation drop-navigation">
         <ul class="nav nav-sidebar">
-            <li class="active"><a href="index.html" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
-            <li><a href="shows.html" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>我的课程</a></li>
+            <li class="active"><a href="__APP__/Home/Index/index" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
+            <li><a href="__APP__/Home/Course/allCourse" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>所有课程</a></li>
             <eq name="Think.session.category" value="2">
             <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
             <ul class="cl-effect-2">
-                <li><a href="__APP__/Home/Index/newCourse">开设新课程</a></li>
-                <li><a href="movies.html">管理已有课程</a></li>
+                <li><a href="__APP__/Home/Course/newCourse">开设新课程</a></li>
+                <li><a href="__APP__/Home/Course/myCourse?id={$Think.session.id}">管理已有课程</a></li>
             </ul>
             </eq>
             <!-- script-for-menu -->

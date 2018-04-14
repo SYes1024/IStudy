@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/IStudy.iml" filepath="$PROJECT_DIR$/.idea/IStudy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ebsz/.idea/ebsz.iml" filepath="$PROJECT_DIR$/../ebsz/.idea/ebsz.iml" />
       <module fileurl="file://$PROJECT_DIR$/../jiehuo/.idea/jiehuo.iml" filepath="$PROJECT_DIR$/../jiehuo/.idea/jiehuo.iml" />
       <module fileurl="file://$USER_HOME$/Desktop/网站整体模板/moban733/.idea/moban733.iml" filepath="$USER_HOME$/Desktop/网站整体模板/moban733/.idea/moban733.iml" />
     </modules>

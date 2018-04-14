@@ -11,6 +11,7 @@ use Think\Model\RelationModel;
 
 class UserModel extends RelationModel
 {
+    private $username;
 //    protected $_link = array(
 //        'Role' => array(
 //            'mapping_type'  => self::MANY_TO_MANY,

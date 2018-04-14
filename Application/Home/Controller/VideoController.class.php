@@ -8,8 +8,14 @@
 
 namespace Home\Controller;
 
+use Think\Controller;
 
-class VideoController
+class VideoController extends Controller
 {
-
+    public function play(){
+        $this->display();
+    }
+    public function play2(){
+        $this->display();
+    }
 }
