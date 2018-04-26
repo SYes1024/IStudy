@@ -132,9 +132,9 @@ function del($fileName){
  * 将数组分组
  */
 function groupArr($arr){
-    for($i=0;$i<ceil(count($arr)/3);$i++)  //三个三个一组
+    for($i=0;$i<ceil(count($arr)/4);$i++)  //四个四个一组
         {
-            $return[] = array_slice($arr, $i * 3 ,3);
+            $return[] = array_slice($arr, $i * 4 ,4);
         }
     return $return;
 }

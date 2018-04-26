@@ -1,0 +1,58 @@
+<extend name="Public:menu"/>
+<block name="head">
+    <style>
+        .recommended-grid{
+            margin-bottom: 15px;
+        }
+
+        .apply-active{
+            color: #00aced;
+        }
+    </style>
+</block>
+<block name="content">
+    <div class="top-grids">
+        <div class="recommended-info">
+            <h3>所有课程</h3>
+        </div>
+        <div class="container-fluid">
+            <empty name="result">暂无内容</empty>
+            <volist name="result" id="v1">
+                    <volist name="v1" id="v2">
+                        <div class="col-md-3 col-sm-4 col-xs-12 resent-grid recommended-grid slider-top-grids">
+                            <div class="resent-grid-img recommended-grid-img">
+                                <a href="__APP__/Home/Course/detail?id={$v2['id']}">
+                                    <img class="img" src="<php>
+                                if($v2['pic'] != '') echo $v2['pic'];
+                                else echo '/IStudy/Upload/course/showimage/default.png';
+                                </php>" alt="" />
+                                </a>
+                            </div>
+                            <div class="resent-grid-info recommended-grid-info">
+                                <h3 style="border-bottom: 1px solid #f01212;">
+                                    <a href="single.html" class="title title-info">
+                                        {$v2['title']}
+                                    </a>
+                                </h3>
+                                <ul>
+                                    <li><p class="author author-info"><eq name="v2['apply']" value="1"><span class="apply-active">报名中</span><else/>已结束</eq></p></li>
+                                    <li class="right-list" style="margin-left: 10px"><p class="views views-info">{$v2['people']}人已报名</p></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </volist>
+                <div class="clearfix"> </div>
+            </volist>
+            <div class="clearfix"> </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="pagination">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</block>

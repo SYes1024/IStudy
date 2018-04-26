@@ -8,9 +8,21 @@
 
 namespace Common\Model;
 use Think\Model\RelationModel;
+use Org\Util\Page;
 
 class CourseModel extends RelationModel
 {
+    protected $_link = array(
+        'User' => array(
+            'mapping_type'      =>  self::MANY_TO_MANY,
+            'class_name'        =>  'User',
+            'mapping_name'      =>  'Users',
+            'foreign_key'       =>  'student_id',
+            'relation_foreign_key'  =>  'course_id',
+            'relation_table'    =>  'choose_course' //此处应显式定义中间表名称，且不能使用C函数读取表前缀
+        )
+    );
+
     /**
      * @param $title
      * @param string $brief
@@ -34,21 +46,57 @@ class CourseModel extends RelationModel
     }
 
     /**
-     * @param $teacher_id
+     * @param $type
+     * @param string $condition
+     * @param int $pass
      * @return mixed
-     * 根据教师id查课
+     * 根据条件查询课程
      */
-    public function findByTeacher($teacher_id)
+    public function findByType($type, $condition = null, $pass = 0)
     {
-        $where['teacher_id'] = $teacher_id;
-        $result = M('Course')->where($where)->order('create_time desc')->select();
+        $model = M('Course');
+        switch ($type){
+            case 'all':
+                $where = array();
+                break;
+            case 'teacher':
+                $where['teacher_id'] = $condition;
+                break;
+            case 'search':
+                $where['title'] = array('like',"%$condition%");
+                break;
+            default:
+                $where = array();
+                break;
+        }
+        if($pass == 1){
+            $where['pass'] = $pass;
+        }
+        $count = $model->where($where)->count();//总数
+        $Page = new Page($count,8);//分页实例化
+        $pageShow = $Page->show();// 分页显示输出
+        $result = $model->where($where)->order('apply desc,create_time desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        $return['result'] = $result;
+        $return['page'] = $pageShow;
+
+        return $return;
+    }
+
+    /**
+     * @return mixed
+     * 查询全部课程，无分页
+     */
+    public function findAll()
+    {
+        $result = M('Course')->select();
 
         return $result;
     }
 
-    public function findAll()
+    public function findOne($id)
     {
-        $result = M('Course')->select();
+        $where['id'] = $id;
+        $result = M('Course')->where($where)->find();
 
         return $result;
     }

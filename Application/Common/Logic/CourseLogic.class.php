@@ -12,6 +12,15 @@ use Think\Model;
 
 class CourseLogic extends Model
 {
+    /**
+     * @param $title
+     * @param $teacher_id
+     * @param string $brief
+     * @param string $pic
+     * @param int $pass
+     * @return bool
+     * 添加课程
+     */
     public function addCourse($title, $teacher_id, $brief="", $pic="", $pass=0)
     {
         $course = new CourseModel();
@@ -32,31 +41,55 @@ class CourseLogic extends Model
     public function findMyCourse($teacher_id = 0)
     {
         $course = new CourseModel();
-        $result = $course->findByTeacher($teacher_id);
+        $result = $course->findByType('teacher', $teacher_id);
 
-        foreach ($result as $k => $v){   //转成提示
+        foreach ($result['result'] as $k => $v){   //转成提示
             switch ($v['pass']){
                 case -1:
-                    $result[$k]['pass'] = "未通过";
+                    $result['result'][$k]['pass'] = "未通过";
                     break;
                 case 0:
-                    $result[$k]['pass'] = "待审核";
+                    $result['result'][$k]['pass'] = "待审核";
                     break;
                 case 1:
-                    $result[$k]['pass'] = "已通过";
+                    $result['result'][$k]['pass'] = "已通过";
                     break;
             }
         }
 
-        $return = groupArr($result);
-        return $return;
+        $result['result'] = groupArr($result['result']);
+        return $result;
     }
 
+    /**
+     * @return mixed
+     * 查询所有课程，并对其进行分组
+     */
     public function findAll()
     {
         $course = new CourseModel();
-        $result = $course->findAll();
-        $return = groupArr($result);
-        return $return;
+        $result = $course->findByType('all',array(),1);
+        $result['result'] = groupArr($result['result']);
+        return $result;
+    }
+
+    /**
+     * @param $condition
+     * @return mixed
+     * 搜索课程，并进行分组
+     */
+    public function search($condition)
+    {
+        $course = new CourseModel();
+        $result = $course->findByType('search', $condition);
+        $result['result'] = groupArr($result['result']);
+        return $result;
+    }
+
+    public function findOne($id=0)
+    {
+        $course = new CourseModel();
+        $result = $course->findOne($id);
+        return $result;
     }
 }

@@ -4,9 +4,7 @@
         .recommended-grid{
             margin-bottom: 15px;
         }
-        .img{
-            min-height: 265px;
-        }
+
     </style>
 </block>
 <block name="content">
@@ -15,26 +13,20 @@
             <h3>课程管理</h3>
         </div>
         <div class="container-fluid">
+        <empty name="result">暂无内容</empty>
         <volist name="result" id="v1">
-            <div class="row">
                 <volist name="v1" id="v2">
-                    <div class="col-md-4 resent-grid recommended-grid slider-top-grids">
+                    <div class="col-md-3 col-sm-4 col-xs-12 resent-grid recommended-grid slider-top-grids">
                         <div class="resent-grid-img recommended-grid-img">
-                            <a href="single.html">
+                            <a href="__APP__/Home/Course/detail?id={$v2['id']}">
                                 <img class="img" src="<php>
                                 if($v2['pic'] != '') echo $v2['pic'];
                                 else echo '/IStudy/Upload/course/showimage/default.png';
                                 </php>" alt="" />
                             </a>
-                            <!--<div class="time">-->
-                                <!--<p>3:04</p>-->
-                            <!--</div>-->
-                            <!--<div class="clck">-->
-                                <!--<span class="glyphicon glyphicon-time" aria-hidden="true"></span>-->
-                            <!--</div>-->
                         </div>
                         <div class="resent-grid-info recommended-grid-info">
-                            <h3>
+                            <h3 style="border-bottom: 1px solid #f01212;">
                                 <a href="single.html" class="title title-info">
                                 {$v2['title']}
                                 </a>
@@ -46,10 +38,18 @@
                         </div>
                     </div>
                 </volist>
-            </div>
-
+            <div class="clearfix"> </div>
         </volist>
+            <div class="clearfix"> </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="pagination">
+                        {$page}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="clearfix"> </div>
+
+
     </div>
 </block>

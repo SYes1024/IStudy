@@ -625,7 +625,7 @@ a.btn.btn-primary.btn-lg.see-button.hvr-shutter-out-horizontal {
 }
 .recommended-grid-info ul li{
     display: inline-block !important;
-    width: 49%;
+    /*width: 49%;*/
 }
 .recommended-grid-info ul li.right-list{
    text-align:right;
@@ -2377,7 +2377,7 @@ background: url(../images/social.png) no-repeat 0px 0px;
 		float: none !important;
 	}
 	.recommended-grid-info ul li {
-		width: 49%;
+		/*width: 49%;*/
 	}
 	.recommended-grid-info ul li.right-list {
 		text-align: right;

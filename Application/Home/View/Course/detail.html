@@ -1,0 +1,83 @@
+<extend name="Public:menu"/>
+<block name="head">
+    <style>
+        .detail-text{
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .span-title{
+            font-weight:bold;font-size:16px;letter-spacing: 2px;
+        }
+        .span-content{
+            color:#666666;
+        }
+        .limit-class{
+            display: inline-block;
+            max-width: 340px;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+        .teacher-title{
+            margin-top: 0px;
+            border-top: 3px solid #009dd9;
+            border-bottom: none;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</block>
+<block name="content">
+    <div class="recommended-info">
+        <h3>{$result['title']}</h3>
+    </div>
+    <div class="container-fluid">
+        <div class="row" style="background: #F8F8F8;padding: 30px 0">
+            <div class="col-sm-4" style="margin-bottom: 20px">
+                <img src="<php>
+                if($result['pic'] != '') echo $result['pic'];
+                else echo '/IStudy/Upload/course/showimage/default.png';
+            </php>" width="100%">
+            </div>
+            <div class="col-sm-4 col-sm-4">
+                <div class="detail-text">
+                    <span class="span-title">课程难度：</span>
+                    <span class="span-content">初级</span>
+                </div>
+                <div class="detail-text">
+                    <span class="span-title">上课时间：</span>
+                    <span class="span-content">每周三8:00pm</span>
+                </div>
+                <div class="detail-text">
+                    <span class="span-title">课程时长：</span>
+                    <span class="span-content">8小时</span>
+                </div>
+                <div class="detail-text">
+                    <span class="span-title">限定班级：</span>
+                    <span class="span-content limit-class">网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142</span>
+                </div>
+                <div class="detail-text">
+                    <span class="span-title">已报名人数：</span>
+                    <span class="span-content">888</span>
+                </div>
+                <div class="detail-text">
+                    <button class="btn btn-primary" style="padding: 8px 30px;">我要报名</button>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="teacher-title">
+                    教师介绍
+                </div>
+                <ul>
+                    <li>
+                        <div style="text-align: center">
+                            <img src="{$result['pic']}" class="img-circle" width="90px" height="90px">
+                        </div>
+                    </li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</block>

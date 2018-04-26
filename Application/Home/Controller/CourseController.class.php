@@ -88,14 +88,32 @@ class CourseController extends Controller
         $teacher_id = I('get.id');
         $result = $course->findMyCourse($teacher_id);
 
-        $this->assign('result', $result);
+        $this->assign('result', $result['result']);
+        $this->assign('page', $result['page']);
         $this->display();
     }
 
+    /**
+     * 所有课程
+     */
     public function allCourse(){
         $course = new CourseLogic();
-        $result = $course->findAll();
+        if(I('get.search')){
+            $condition = I('get.search');
+            $result = $course->search($condition);
+        }else{
+            $result = $course->findAll();
+        }
+        $this->assign('result', $result['result']);
+        $this->assign('page', $result['page']);
+        $this->assign('search', $condition);
+        $this->display();
+    }
 
+    public function detail(){
+        $id = I('get.id');
+        $course = new CourseLogic();
+        $result = $course->findOne($id);
         $this->assign('result', $result);
         $this->display();
     }

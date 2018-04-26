@@ -53,6 +53,9 @@
         #small-dialog3, #small-dialog{
             text-align: left;
         }
+        ul li{
+            list-style-type:none
+        }
     </style>
     <script>
         $(function () {
@@ -265,8 +268,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">
-                <form class="navbar-form navbar-right">
-                    <input type="text" class="form-control" placeholder="Search...">
+                <form class="navbar-form navbar-right" action="__APP__/Home/Course/allCourse" method="get">
+                    <input type="text" class="form-control" placeholder="<empty name='search'>Search...<else/>{$search}</empty>" name="search">
                     <input type="submit" value=" ">
                 </form>
             </div>
@@ -455,6 +458,7 @@
     <div class="drop-navigation drop-navigation">
         <ul class="nav nav-sidebar">
             <li class="active"><a href="__APP__/Home/Index/index" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
+            <li class="active"><a href="#" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>个人资料</a></li>
             <li><a href="__APP__/Home/Course/allCourse" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>所有课程</a></li>
             <eq name="Think.session.category" value="2">
             <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>

@@ -9,13 +9,19 @@
 namespace Home\Controller;
 
 use Think\Controller;
+use Common\Logic\CommentLogic;
 
 class VideoController extends Controller
 {
     public function play(){
+        $id = 12;
+        $comm = new CommentLogic();
+        $result = $comm->findByVideo($id,1);
+
+        $this->assign('comment', $result['result']);//评论
+        $this->assign('page', $result['page']);
+        $this->assign('video', $id);
         $this->display();
     }
-    public function play2(){
-        $this->display();
-    }
+
 }

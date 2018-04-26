@@ -1,161 +1,267 @@
 <extend name="Public:menu"/>
 <block name="head">
-    <link rel="stylesheet" href="__PUBLIC__/css/plyr.css">
-    <link rel="stylesheet" href="__PUBLIC__/plugins/video.js/dist/video-js.min.css">
-    <script src="__PUBLIC__/js/plyr.js"></script>
-    <script src="__PUBLIC__/plugins/flv.js/dist/flv.min.js"></script>
-    <script src="__PUBLIC__/plugins/video.js/dist/video.min.js"></script>
-    <script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
     <style>
-        .mainContainer {
-            display: block;
-            width: 1024px;
-            margin-left: auto;
-            margin-right: auto;
+        ul{
+            padding-left: 0;
+        }
+        .myvideo{
+            width: 100%;
+            height: auto;
+            display:block;
+        }
+        .mywrap{
+            min-height: 1px;
         }
 
-        .urlInput {
-            display: block;
+        .video-menu{
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 8px;
+            border-bottom: 1px solid #D1D6DA;
+            height: 70px;
+            background-color: #fff;
+        }
+        .video-menu-item{
+            float: left;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .video-menu a, .video-ul-li a{
+            display: block;
+            padding: 26px 24px;
+            font-size: 16px;
+            color: #4d555d;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .video-menu a.active, .video-menu a:hover, .video-ul-li a:hover{
+            color: #00b43c;
+        }
+        a, a.active, a:hover, a:focus{
+            outline: 0;
+        }
+        .video-ul{
+            position: absolute;
+            right: 0px;
+            top: 0;
+            height: 70px;
+            padding-left: 0;
+            z-index: 999;
+        }
+        .video-ul-li{
+            text-align: center;
+            background: #363C40;
+            margin: 10px 0;
+            display: block;
+        }
+        .video-ul-li a{
+            padding: 20px 10px;
+            color: #B5B9BC;
+        }
+        .li-avator{
+            float: left;
+            width: 40px;
+            height: 40px;
+        }
+        .li-avator img{
+            display: block;
+            border-radius: 50%;
+            border: 0;
+            width: 40px;
+            height: 40px;
+        }
+        .li-main{
+            margin-left: 60px;
+        }
+        .li-main-name{
+            line-height: 1.2;
             margin-bottom: 8px;
         }
-
-        .centeredVideo {
-            display: block;
-            /*width: 100%;*/
-            /*height: 576px;*/
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: auto;
+        .li-main-content{
+            margin-top: 3px;
+            font-size: 14px;
+            color: #14191e;
+            line-height: 24px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            overflow: auto;
+        }
+        .li-main-btm{
+            font-size: 12px;
+            color: #93999f;
+            margin-top: 15px;
         }
 
-        .controls {
-            display: block;
-            width: 100%;
-            text-align: left;
-            margin-left: auto;
-            margin-right: auto;
-        }
     </style>
     <script>
-        document.documentElement.style.fontSize = $(document.documentElement).width() / 7.5 + 'px';
-        $(window).on('resize', function() {
-            document.documentElement.style.fontSize = $(document.documentElement).width() / 7.5 + 'px';
+        $(function () {
+            var myVideo=document.getElementById("myvideo");
+            myVideo.addEventListener('play',function(){
+                $('.video-ul-li').hide();
+            });
+            myVideo.addEventListener('pause',function(){
+                $('.video-ul-li').show();
+            });
+//            $(window).beforeunload(function () {
+//                alert(111);
+//            });
+
+            /**
+             * 发表评论
+             */
+            $('#comment').validator({
+                fields: {
+                    content: {
+                        rule: "required;",
+                        msg: {
+                            required: "内容必填",
+                        },
+                        ok: "",
+                        timely: 1,
+                        target: "#contenMsg",
+                    },
+                },
+                valid: function(form) {
+                    $.ajax({
+                        url: "__APP__/Home/Comment/add",
+                        type: "POST",
+                        async: true,
+                        data: $("#comment").serialize(),
+                        success: function (data) {
+                            if (data['code'] == 1) {
+                                toastr.success(data['msg'], 'OK');
+//                                setTimeout(function () {
+//                                    window.location.href = "__APP__/Home/Course/myCourse?id={$Think.session.id}";
+//                                }, 2000);
+                            } else {
+                                toastr.error(data['msg'], 'ERROR');
+                            }
+                        }
+                    });
+                }
+            });
+
+
+//            function getComments(pageno) {
+//                $.ajax({
+//                    type:"GET",
+//                    url:"__APP__/Home/Comment/get/id/{$result['id']}/page/"+pageno,
+//                    error:function () {
+//                        $("#comment-ul").html("获取评论失败");
+//                    },
+//                    success:function (data) {
+//                        $("#comment-ul").empty().html(data);
+//                    }
+//                });
+//            }
         });
+        //禁止拖动进度条
+        var int = self.setInterval("ban()", 100);
+        var before = 0;
+        function ban() {
+            var video = document.getElementById("myvideo"); //获取video对象
+            var now = video.currentTime;
+            var dif = now - before;//差值
+            if(dif>1){
+                video.currentTime = before;
+            }
+            before = now;
+        }
     </script>
 </block>
 <block name="content">
-    <div class="title">
-        <h3>1111111111111111</h3>
-        <div class="mainContainer">
-            <!--<video id="videoElement" name="videoElement" class="centeredVideo" controls width="200" >-->
-                <!--Your browser is too old which doesn't support HTML5 video.-->
-            <!--</video>-->
-            <div class="videoBox">
-                <i class="fa fa-play-circle-o"></i>
-                <video id="video" x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline  poster="video.png" preload="metadata"></video>
-                <canvas id="canvas" width="1920" height="1080"></canvas>
+    <div class="container-fluid">
+    <div class="row mywrap">
+        <div class="col-sm-12" >
+            <div class="title" style="overflow: hidden">
+                <h1>视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题</h1>
             </div>
-            <br>
-            <div class="controls">
-                <button onclick="flv_load()">Load</button>
-                <button onclick="flv_start()">Start</button>
-                <button onclick="flv_pause()">Pause</button>
-                <button onclick="flv_destroy()">Destroy</button>
-                <input style="width:100px" type="text" name="seekpoint"/>
-                <button onclick="flv_seekto()">SeekTo</button>
+            <div style="position: relative">
+            <video id="myvideo" src="/IStudy/Upload/video/4.mp4" controls class="myvideo" playsinline -webkit-playsinline>
+            </video>
+            <ul class="video-ul" id="video-ul">
+                <li class="video-ul-li">
+                    <a href="javascript:void(0)">收藏</a>
+                </li>
+                <li class="video-ul-li">
+                    <a href="javascript:void(0)">在手机上看</a>
+                </li>
+            </ul>
             </div>
         </div>
-<script>
-    function supportMSEH264Playback() {
-        return (window.MediaSource || window.WebKitMediaSource) &&
-            window.MediaSource.isTypeSupported('video/mp4; codecs="avc1.42E01E,mp4a.40.2"');
-    }
-    var u = navigator.userAgent;
-    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-    if(isAndroid){
-        $("#video").hide();
-        $("i.fa").show();
-    }else{
-        $("i.fa").hide();
-        $("#canvas").hide();
-    }
-    var videoanimate;
-    canvas = document.getElementById('canvas');
-    context = canvas.getContext( '2d' );
-    context.fillStyle = '#fff';
-    context.fillRect( 0, 0, canvas.width, canvas.height );//绘制1920*1080像素的已填充矩形。
-    var img=new Image();//新建一个图片，模仿video里面的poster属性。
-    img.src="video.png";
-    context.drawImage(img,0, 0,canvas.width,canvas.height);//将图片绘制进canvas。
-    function animate() {    //渲染方法。
-        if(video.paused){     //判断视频是否暂停，如果暂停显示控件。
-            $(".video i.fa").show();
-        }
-        context.drawImage(video,0, 0,canvas.width,canvas.height);//将视频当中的一帧绘制到canvas当中。
-        videoanimate = requestAnimationFrame( animate );//每秒60帧渲染页面。关于此方法具体解释请自行百度。
-    }
-    $("#canvas,i.fa").click(function(){
-        if(isAndroid){
-            animate();   //在这里调用。
-            if(!video.paused){    //判断视频时候暂停。
-                video.pause();
-            }else{
-                video.play();
-                $(".video i.fa").hide();
-            }
-        }
-    })
-</script>
-        <script>
-            function flv_load() {
-                    var videoElement = document.getElementById('video');
-                    var flvPlayer = flvjs.createPlayer({
-                        type: 'flv',
-                        url: 'http://localhost/IStudy/Public/Upload/video/7.flv'
-                    });
-                    flvPlayer.attachMediaElement(videoElement);
-                    flvPlayer.load();
 
-                window.player=flvPlayer;
-            }
-
-            function flv_start() {
-                player.play();
-            }
-
-            function flv_pause() {
-                player.pause();
-            }
-
-            function flv_destroy() {
-                player.pause();
-                player.unload();
-                player.detachMediaElement();
-                player.destroy();
-                player = null;
-            }
-
-            function flv_seekto() {
-                var input = document.getElementsByName('seekpoint')[0];
-                player.currentTime = parseFloat(input.value);
-            }
-
-            function getUrlParam(key, defaultValue) {
-                var pageUrl = window.location.search.substring(1);
-                var pairs = pageUrl.split('&');
-                for (var i = 0; i < pairs.length; i++) {
-                    var keyAndValue = pairs[i].split('=');
-                    if (keyAndValue[0] === key) {
-                        return keyAndValue[1];
-                    }
-                }
-                return defaultValue;
-            }
-
-        </script>
+    </div>
+    <div class="row">
+        <div class="col-sm-7">
+            <ul class="video-menu">
+            <li class="video-menu-item"><a class="active" href="javascript:void(0)" id="plMenu">评论</a></li>
+            <li class="video-menu-item"><a href="javascript:void(0)" id="qaMenu" class="">问答</a></li>
+            </ul>
+            <div style="display: block; padding-top: 24px;">
+                <form id="comment">
+                    <div class="form-group">
+                        <textarea name="content" class="form-control" rows="4" placeholder="发表你的看法" style="resize:none;"></textarea>
+                        <span class="msg-box" id="contenMsg"></span>
+                    </div>
+                    <input type="hidden" name="user_id" value="{$Think.session.id}">
+                    <input type="hidden" name="video_id" value="{$video}">
+                    <div class="form-group">
+                    <button class="btn btn-default" type="submit">发表评论</button>
+                    </div>
+                </form>
+                <div style="border-top: 1px solid #d9dde1;">
+                    <ul id="comment-ul">
+                        <volist name="comment" id="v">
+                        <li style="padding: 20px 24px;border-bottom: 1px solid #d9dde1;">
+                            <div class="li-avator">
+                                <img src="{$v['head']}">
+                            </div>
+                            <div class="li-main">
+                                <div class="li-main-name">{$v['name']}</div>
+                                <div class="li-main-content">{$v['content']}</div>
+                                <div class="li-main-btm clearfix">
+                                    <span style="float: left;">{$v['create_time']}</span>
+                                    <a style="float: right;" href="javascript:void(0)"><i class="glyphicon glyphicon-thumbs-up"></i><span>{$v['support_num']}</span></a>
+                                </div>
+                            </div>
+                        </li>
+                        </volist>
+                        <li style="padding: 20px 24px;border-bottom: 1px solid #d9dde1;">
+                            <div class="li-avator">
+                                <img src="/IStudy/Upload/course/showimage/2018/04-13/5ad01cd7f1666.jpg">
+                            </div>
+                            <div class="li-main">
+                                <div class="li-main-name">姓名</div>
+                                <div class="li-main-content">说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容</div>
+                                <div class="li-main-btm clearfix">
+                                    <span style="float: left;">2018-02-02 11:11:11</span>
+                                    <a style="float: right;" href="javascript:void(0)"><i class="glyphicon glyphicon-thumbs-up"></i><span>2</span></a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="">
+                <h3>学霸榜</h3>
+                <ul>
+                    <li>名字   学习时长：2221小时</li>
+                    <li>名字   学习时长：2221小时</li>
+                    <li>名字   学习时长：2221小时</li>
+                    <li>名字   学习时长：2221小时</li>
+                </ul>
+            </div>
+            <div>
+                <h3>名师榜</h3>
+                <ul>
+                    <li>名字   获得称赞：2221个</li>
+                    <li>名字   获得称赞：2211个</li>
+                    <li>名字   获得称赞：2121个</li>
+                    <li>名字   获得称赞：1221个</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
 </block>
