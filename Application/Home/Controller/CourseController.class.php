@@ -10,29 +10,13 @@ namespace Home\Controller;
 
 use Think\Controller;
 use Common\Logic\CourseLogic;
+use Common\Logic\ChooseLogic;
+use Common\Logic\VideoLogic;
 
 class CourseController extends Controller
 {
     /**
-     * 所有课程
-     */
-    public function all(){
-        $this->display();
-    }
-
-    /**
-     * 开设课程
-     */
-    public function newCourse(){
-        if(session('category') >= 3){
-            $this->error("你没有权限");
-        }else{
-            $this->display();
-        }
-    }
-
-    /**
-     * 图片上传
+     * 功能:图片上传
      */
     public function imgUp(){
         $root = I('get.rootpath');
@@ -49,7 +33,7 @@ class CourseController extends Controller
     }
 
     /**
-     * 图片删除
+     * 功能:图片删除
      */
     public function imgDel(){
         $filename = I('post.key');//文件地址
@@ -64,16 +48,24 @@ class CourseController extends Controller
         }
     }
     /**
-     * 课程开设
+     * 功能:课程开设
      */
     public function add(){
         $title = I('post.title');
+        $date = I('post.date');
+        $strtime = I('post.time');
+        $sumtime = I('post.sumtime');
+        $hard = I('post.hard');
+        $class = I('post.class');
         $teacher_id = I('teacher_id');
         $brief = I('post.brief');
         $pic = I('post.showpic');
 
+        $datearr = explode("至",$date);//拆成开始和结束日期
+        preg_match_all("/([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/", $strtime, $time);
+        $time = implode(',',$time[0]);
         $course = new CourseLogic();
-        if($course->addCourse($title, $teacher_id, $brief, $pic)){
+        if($course->addCourse($title, $teacher_id, $date, $datearr, $strtime, $time, $sumtime, $hard, $class, $brief, $pic)){
             $this->ajaxReturn(array('code' => 1, 'msg' => '开设成功，请等待后台审核！'));
         }else{
             $this->ajaxReturn(array('code' => 0, 'msg' => '开设失败'));
@@ -81,7 +73,7 @@ class CourseController extends Controller
     }
 
     /**
-     * 教师开设的课程
+     * 页面:教师开设课程
      */
     public function myCourse(){
         $course = new CourseLogic();
@@ -94,7 +86,7 @@ class CourseController extends Controller
     }
 
     /**
-     * 所有课程
+     * 页面:所有课程
      */
     public function allCourse(){
         $course = new CourseLogic();
@@ -110,11 +102,49 @@ class CourseController extends Controller
         $this->display();
     }
 
+    /**
+     * 页面:课程详情
+     */
     public function detail(){
         $id = I('get.id');
         $course = new CourseLogic();
-        $result = $course->findOne($id);
+        $result = $course->findOne($id);//课程信息
+        $choose = new ChooseLogic();
+        $ischoose = $choose->isChoose($id,session('id'));//是否已报名
+        $result['ischoose'] = $ischoose;
+        $video = new VideoLogic();
+        $allVideo = $video->findByCourse($id);
+        $result['video'] = $allVideo;
         $this->assign('result', $result);
         $this->display();
+    }
+
+    /**
+     * 页面:课程管理
+     */
+    public function manageCourse(){
+        $course = new CourseLogic();
+        $result = $course->findAll(1);
+
+        $this->assign('result', $result['result']);
+        $this->assign('page', $result['page']);
+        $this->display();
+    }
+
+    /**
+     * 功能:报名
+     */
+    public function apply(){
+        $course = I('post.course');
+        $student = I('post.student');
+
+        $choose = new ChooseLogic();
+        $result = $choose->addChoose($course, $student);
+
+        if($result){
+            $this->ajaxReturn(array('code' => 1, 'msg' => '报名成功！'));
+        }else{
+            $this->ajaxReturn(array('code' => 0, 'msg' => '报名失败'));
+        }
     }
 }

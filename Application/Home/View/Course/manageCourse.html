@@ -1,0 +1,39 @@
+<extend name="Public:menu"/>
+<block name="head">
+</block>
+<block name="content">
+    <div class="recommended-info">
+        <h3>课程管理</h3>
+    </div>
+    <div class="container-fluid">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>课程名</th>
+                    <th>状态</th>
+                    <th>申请人</th>
+                    <th>创建时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            <volist name="result" id="v">
+                <tr>
+                    <td>{$v.id}</td>
+                    <td><a href="__APP__/Home/Course/detail?id={$v.id}">{$v.title}</a></td>
+                    <td>{$v.pass}</td>
+                    <td>{$v.name}</td>
+                    <td>{$v.create_time}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pagination">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

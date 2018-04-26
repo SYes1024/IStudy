@@ -8,9 +8,8 @@
 
 namespace Common\Logic;
 use Common\Model\UserModel;
-use Think\Model;
 
-class UserLogic extends Model
+class UserLogic
 {
     /**
      * @param $email

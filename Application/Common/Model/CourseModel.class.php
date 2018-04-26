@@ -25,16 +25,29 @@ class CourseModel extends RelationModel
 
     /**
      * @param $title
+     * @param $teacher_id
+     * @param $date  日期，包含开始和结束
+     * @param $time
+     * @param $sumtime
+     * @param $hard
+     * @param $class
      * @param string $brief
      * @param string $pic
-     * @param $teacher_id
      * @param int $pass
      * @return mixed
      * 添加课程
      */
-    public function addCourse($title, $teacher_id, $brief="", $pic="", $pass=0)
+    public function addCourse($title, $teacher_id, $date, $datearr, $strtime, $time, $sumtime, $hard, $class, $brief="", $pic="", $pass=0)
     {
         $data['title'] = $title;
+        $data['date'] = $date;
+        $data['startdate'] = $datearr[0];
+        $data['enddate'] = $datearr[1];
+        $data['strtime'] = $strtime;
+        $data['time'] = $time;
+        $data['sumtime'] = $sumtime;
+        $data['hard'] = $hard;
+        $data['class'] = $class;
         $data['brief'] = $brief;
         $data['pic'] = $pic;
         $data['teacher_id'] = $teacher_id;
@@ -52,7 +65,7 @@ class CourseModel extends RelationModel
      * @return mixed
      * 根据条件查询课程
      */
-    public function findByType($type, $condition = null, $pass = 0)
+    public function findByType($type, $condition = null, $pass = -1, $num = 8, $order = 'pass,create_time desc', $fields = "", $join = "")
     {
         $model = M('Course');
         switch ($type){
@@ -69,13 +82,13 @@ class CourseModel extends RelationModel
                 $where = array();
                 break;
         }
-        if($pass == 1){
+        if($pass != -1){
             $where['pass'] = $pass;
         }
         $count = $model->where($where)->count();//总数
-        $Page = new Page($count,8);//分页实例化
+        $Page = new Page($count,$num);//分页实例化
         $pageShow = $Page->show();// 分页显示输出
-        $result = $model->where($where)->order('apply desc,create_time desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        $result = $model->field($fields)->join($join)->where($where)->order($order)->limit($Page->firstRow.','.$Page->listRows)->select();
         $return['result'] = $result;
         $return['page'] = $pageShow;
 
@@ -86,17 +99,23 @@ class CourseModel extends RelationModel
      * @return mixed
      * 查询全部课程，无分页
      */
-    public function findAll()
+    public function findAll($apply = 0)
     {
-        $result = M('Course')->select();
+        $model = M('Course');
+
+//        $where['apply'] = $apply;
+//        $count = $model->where($where)->count();//总数
+//        $Page = new Page($count,8);//分页实例化
+//        $pageShow = $Page->show();// 分页显示输出
+        $result = $model->join('user on user.id = course.teacher_id')->select();
 
         return $result;
     }
 
-    public function findOne($id)
+    public function findOne($id, $fields = "", $join = "")
     {
-        $where['id'] = $id;
-        $result = M('Course')->where($where)->find();
+        $where['course.id'] = $id;
+        $result = M('Course')->field($fields)->join($join)->where($where)->find();
 
         return $result;
     }

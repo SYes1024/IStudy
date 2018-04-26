@@ -9,9 +9,8 @@
 namespace Common\Logic;
 
 use Common\Model\CommentModel;
-use Think\Model;
 
-class CommentLogic extends Model
+class CommentLogic
 {
     public function addComment($video, $user, $content, $category = 1)
     {

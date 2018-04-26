@@ -26,7 +26,61 @@
             font-size: 20px;
             margin-bottom: 20px;
         }
+        .nav > li > a{
+            padding: 8px 15px;
+        }
+        .nav-tabs{
+            margin-bottom: 20px;
+        }
+        .nav-tabs-li{
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0s;
+        }
     </style>
+    <script>
+        $(function () {
+            /**
+             * 标签点击
+             */
+            $("li a").click(function () {
+                $(".nav-tabs li").removeClass('active');
+                $(this).parent().addClass('active');
+                $(".course-content-main").addClass('hidden');
+                var e = $(this).attr('href');
+                $(e).removeClass('hidden');
+            });
+
+            /**
+             * 报名提交
+             */
+            $('#apply').validator({
+                valid: function(form) {
+                    $.ajax({
+                        url: "__APP__/Home/Course/apply",
+                        type: "POST",
+                        async: true,
+                        data: $("#apply").serialize(),
+                        success: function (data) {
+                            if (data['code'] == 1) {
+                                toastr.success(data['msg'], 'OK');
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000);
+                            } else {
+                                toastr.error(data['msg'], 'ERROR');
+                            }
+                        }
+                    });
+                }
+            });
+
+        })
+    </script>
 </block>
 <block name="content">
     <div class="recommended-info">
@@ -43,26 +97,42 @@
             <div class="col-sm-4 col-sm-4">
                 <div class="detail-text">
                     <span class="span-title">课程难度：</span>
-                    <span class="span-content">初级</span>
+                    <span class="span-content">{$result.hard}</span>
+                </div>
+                <div class="detail-text">
+                    <span class="span-title">上课日期：</span>
+                    <span class="span-content">{$result.date}</span>
                 </div>
                 <div class="detail-text">
                     <span class="span-title">上课时间：</span>
-                    <span class="span-content">每周三8:00pm</span>
+                    <span class="span-content">{$result.strtime}</span>
                 </div>
                 <div class="detail-text">
                     <span class="span-title">课程时长：</span>
-                    <span class="span-content">8小时</span>
+                    <span class="span-content">{$result.sumtime}小时</span>
                 </div>
                 <div class="detail-text">
                     <span class="span-title">限定班级：</span>
-                    <span class="span-content limit-class">网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142、网络工程141、网络工程142</span>
+                    <span class="span-content limit-class">{$result.class}</span>
                 </div>
                 <div class="detail-text">
                     <span class="span-title">已报名人数：</span>
-                    <span class="span-content">888</span>
+                    <span class="span-content">{$result.people}</span>
                 </div>
                 <div class="detail-text">
-                    <button class="btn btn-primary" style="padding: 8px 30px;">我要报名</button>
+                    <neq name="result['ischoose']" value="true">
+                    <form id="apply">
+                        <input type="hidden" name="course" value="{$result.id}">
+                        <input type="hidden" name="student" value="{$Think.session.id}">
+                        <button class="btn btn-primary" style="padding: 8px 30px;" id="submit">
+                            我要报名
+                        </button>
+                    </form>
+                    <else/>
+                        <button class="btn btn-success " style="padding: 8px 30px;pointer-events: none;cursor: not-allowed;">
+                            已报名
+                        </button>
+                    </neq>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -72,11 +142,28 @@
                 <ul>
                     <li>
                         <div style="text-align: center">
-                            <img src="{$result['pic']}" class="img-circle" width="90px" height="90px">
+                            <img src="{$result['head']}" class="img-circle" width="90px" height="90px">
                         </div>
                     </li>
                     <li></li>
                 </ul>
+            </div>
+        </div>
+        <div style="margin-top: 20px">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="nav-tabs-li active"><a href="#brief">课程简介</a></li>
+                <eq name="result['ischoose']" value="true">
+                <li role="presentation" class="nav-tabs-li"><a href="#study">开始学习</a></li>
+                </eq>
+            </ul>
+            <div class="course-content">
+                <div class="course-content-main" id="brief">课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介课程简介
+                </div>
+                <div class="row course-content-main hidden" id="study" >
+                    <volist name="result['video']" id="v" key="k" empty="暂未上传视频">
+                        <a href="__APP__/Home/Video/play?id={$v.id}" type="button" class="col-sm-3 col-xs-12 btn btn-default " style="margin: 3px 0px">{$v.title}</a>
+                    </volist>
+                </div>
             </div>
         </div>
     </div>
