@@ -43,7 +43,7 @@ class CommentModel extends RelationModel
         $pageShow = $Page->show();// 分页显示输出
         $result = D('Comment')->Relation(true)->where($where)->order('create_time desc')->limit($Page->firstRow.','.$Page->listRows)->select();
 
-        $return['result'] = $result;
+        $return['comment'] = $result;
         $return['page'] = $pageShow;
 
         return $return;

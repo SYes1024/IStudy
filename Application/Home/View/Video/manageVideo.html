@@ -3,34 +3,34 @@
 </block>
 <block name="content">
     <div class="recommended-info">
-        <h3>课程管理</h3>
+        <h3>视频管理</h3>
     </div>
     <div class="container-fluid">
         <form id="status-form">
-        <div class="row" style="margin-bottom: 10px">
-            <div class="col-sm-2">
-                <div class="form-group">
-                <label for="status" class="control-label">状态：</label>
-                <select class="form-control" id="status" name="status">
-                    <option value="-1" <eq name="Think.get.status" value="-1">selected</eq>>全部</option>
-                    <option value="0" <eq name="Think.get.status" value="0">selected</eq>>待审核</option>
-                    <option value="1" <eq name="Think.get.status" value="1">selected</eq>>已通过</option>
-                    <option value="2" <eq name="Think.get.status" value="2">selected</eq>>未通过</option>
-                </select>
+            <div class="row" style="margin-bottom: 10px">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="status" class="control-label">状态：</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="-1" <eq name="Think.get.status" value="-1">selected</eq>>全部</option>
+                            <option value="0" <eq name="Think.get.status" value="0">selected</eq>>待审核</option>
+                            <option value="1" <eq name="Think.get.status" value="1">selected</eq>>已通过</option>
+                            <option value="2" <eq name="Think.get.status" value="2">selected</eq>>未通过</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
         </form>
         <script>
             $(function () {
                 $("#status").change(function () {
-                    window.location.href="__APP__/Home/Course/manageCourse?status="+$(this).val();
+                    window.location.href="__APP__/Home/Video/manageVideo?status="+$(this).val();
                 })
             })
         </script>
         <div class="row">
-        <table class="table table-bordered table-striped table-responsive">
-            <thead>
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
                 <tr>
                     <th>序号</th>
                     <th>课程名</th>
@@ -39,23 +39,23 @@
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
-            </thead>
-            <tbody>
-            <volist name="result" id="v">
-                <tr>
-                    <td>{$v.id}</td>
-                    <td><a href="__APP__/Home/Course/detail?id={$v.id}">{$v.title}</a></td>
-                    <td>{$v.pass}</td>
-                    <td>{$v.name}</td>
-                    <td>{$v.create_time}</td>
-                    <td>
-                        <a class="btn btn-success" href="javascript:;" role="button" id="pass" data-id="{$v.id}">通过</a>
-                        <a class="btn btn-danger" data-toggle="modal" data-target="#myModal" role="button">驳回</a>
-                    </td>
-                </tr>
-            </volist>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <volist name="result" id="v">
+                    <tr>
+                        <td>{$v.id}</td>
+                        <td><a href="__APP__/Home/Video/play?id={$v.id}">{$v.title}</a></td>
+                        <td>{$v.pass}</td>
+                        <td>{$v.name}</td>
+                        <td>{$v.create_time}</td>
+                        <td>
+                            <a class="btn btn-success" href="javascript:;" role="button" id="pass" data-id="{$v.id}">通过</a>
+                            <a class="btn btn-danger" data-toggle="modal" data-target="#myModal" role="button">驳回</a>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
         </div>
         <div class="row">
             <div class="col-sm-12">
@@ -85,7 +85,7 @@
             $(function () {
                 $("#pass").click(function () {
                     var id = $("#pass").data('id');
-                    $.get("__APP__/Home/Course/verify?status=1"+"&id="+id,function(data,status){
+                    $.get("__APP__/Home/Video/verify?status=1"+"&id="+id,function(data,status){
                         if (data['code'] == 1) {
                             toastr.success(data['msg'], 'OK');
                             setTimeout(function () {
@@ -99,7 +99,7 @@
                 $("#reject").click(function () {
                     var id = $("#reject").data('id');
                     var reason = $("#reason").val();
-                    $.get("__APP__/Home/Course/verify?status=2"+"&id="+id+"&reason="+reason,function(data,status){
+                    $.get("__APP__/Home/Video/verify?status=2"+"&id="+id+"&reason="+reason,function(data,status){
                         if (data['code'] == 1) {
                             toastr.success(data['msg'], 'OK');
                             setTimeout(function () {

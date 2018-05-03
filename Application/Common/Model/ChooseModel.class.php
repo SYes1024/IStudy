@@ -26,6 +26,12 @@ class ChooseModel extends Model
         return $result;
     }
 
+    /**
+     * @param $course
+     * @param $student
+     * @return bool
+     * 添加选课
+     */
     public function addOne($course, $student)
     {
         $data['course_id'] = $course;
@@ -43,5 +49,10 @@ class ChooseModel extends Model
             $return = true;
         }
         return $return;
+    }
+
+    public function sumTimeTop(){
+        $result = M('Choose')->field('user.name,sum(sumtime) as totaltime')->join('user on user.id = student_id')->group('student_id')->order('totaltime desc')->limit(5)->select();
+        return $result;
     }
 }

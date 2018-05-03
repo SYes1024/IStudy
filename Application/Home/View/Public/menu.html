@@ -127,6 +127,16 @@
                         timely: 1,
                         target: "#nameMsg"
                     },
+                    class: {
+                        rule: "required",
+                        msg: {
+                            required: "请填写所在班级",
+                        },
+                        tip: "请如实填写班级",
+                        ok: "",
+                        timely: 1,
+                        target: "#classMsg"
+                    },
                     email: {
                         rule: "required;email; remote(get:__APP__/Home/Login/emailOk)",
                         msg: {
@@ -264,7 +274,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="index.html"><h1>
-                <img src="__PUBLIC__/images/logo.png" alt="" /></h1></a>
+                <img src="__PUBLIC__/images/logo.png" alt="" style="width: 153px;height: 49px;"/></h1></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <div class="top-search">
@@ -340,8 +350,13 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">姓名</label>
-                                <input type="text" class="form-control" name="name">
+                                <input type="text" class="form-control" name="name" placeholder="如：张三">
                                 <span class="msg-box" id="nameMsg"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">班级</label>
+                                <input type="text" class="form-control" name="class" placeholder="如：网络工程141">
+                                <span class="msg-box" id="classMsg"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Email</label>
@@ -366,78 +381,6 @@
                     </div>
                     <div class="clearfix"> </div>
                 </div>
-                <div id="small-dialog7" class="mfp-hide">
-                    <h3>Create Account</h3>
-                    <div class="social-sits">
-                        <div class="facebook-button">
-                            <a href="#">Connect with Facebook</a>
-                        </div>
-                        <div class="chrome-button">
-                            <a href="#">Connect with Google</a>
-                        </div>
-                        <div class="button-bottom">
-                            <p>Already have an account? <a href="#small-dialog" class="play-icon popup-with-zoom-anim">Login</a></p>
-                        </div>
-                    </div>
-                    <div class="signup">
-                        <!--<form action="upload.html">-->
-                            <!--<input type="text" class="email" placeholder="Email" required="required" pattern="([\w-\.]+@([\w-]+\.)+[\w-]{2,4})" title="Enter a valid email"/>-->
-                            <!--<input type="password" placeholder="Password" required="required" pattern=".{6,}" title="Minimum 6 characters required" autocomplete="off" />-->
-                            <!--<input type="submit"  value="Sign In"/>-->
-                        <!--</form>-->
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-                <div id="small-dialog4" class="mfp-hide">
-                    <h3>Feedback</h3>
-                    <div class="feedback-grids">
-                        <div class="feedback-grid">
-                            <p>Suspendisse tristique magna ut urna pellentesque, ut egestas velit faucibus. Nullam mattis lectus ullamcorper dui dignissim, sit amet egestas orci ullamcorper.</p>
-                        </div>
-                        <div class="button-bottom">
-                            <p><a href="#small-dialog" class="play-icon popup-with-zoom-anim">Sign in</a> to get started.</p>
-                        </div>
-                    </div>
-                </div>
-                <div id="small-dialog5" class="mfp-hide">
-                    <h3>Help</h3>
-                    <div class="help-grid">
-                        <p>Suspendisse tristique magna ut urna pellentesque, ut egestas velit faucibus. Nullam mattis lectus ullamcorper dui dignissim, sit amet egestas orci ullamcorper.</p>
-                    </div>
-                    <div class="help-grids">
-                        <div class="help-button-bottom">
-                            <p><a href="#small-dialog4" class="play-icon popup-with-zoom-anim">Feedback</a></p>
-                        </div>
-                        <div class="help-button-bottom">
-                            <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Lorem ipsum dolor sit amet</a></p>
-                        </div>
-                        <div class="help-button-bottom">
-                            <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Nunc vitae rutrum enim</a></p>
-                        </div>
-                        <div class="help-button-bottom">
-                            <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Mauris at volutpat leo</a></p>
-                        </div>
-                        <div class="help-button-bottom">
-                            <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Mauris vehicula rutrum velit</a></p>
-                        </div>
-                        <div class="help-button-bottom">
-                            <p><a href="#small-dialog6" class="play-icon popup-with-zoom-anim">Aliquam eget ante non orci fac</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div id="small-dialog6" class="mfp-hide">
-                    <div class="video-information-text">
-                        <h4>Video information & settings</h4>
-                        <p>Suspendisse tristique magna ut urna pellentesque, ut egestas velit faucibus. Nullam mattis lectus ullamcorper dui dignissim, sit amet egestas orci ullamcorper.</p>
-                        <ol>
-                            <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                            <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                            <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                            <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                            <li>Nunc vitae rutrum enim. Mauris at volutpat leo. Vivamus dapibus mi ut elit fermentum tincidunt.</li>
-                        </ol>
-                    </div>
-                </div>
                 <div class="clearfix"> </div>
             </div>
         </div>
@@ -458,14 +401,30 @@
     <div class="drop-navigation drop-navigation">
         <ul class="nav nav-sidebar">
             <li class="active"><a href="__APP__/Home/Index/index" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>主页</a></li>
-            <li class="active"><a href="#" class="home-icon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>个人资料</a></li>
-            <li><a href="__APP__/Home/Course/allCourse" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-blackboard" aria-hidden="true"></span>所有课程</a></li>
-            <eq name="Think.session.category" value="2">
-            <li><a href="#" class="menu1"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
+            <li><a href="__APP__/Home/Course/allCourse" class="user-icon"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>所有课程</a></li>
+            <li><a href="#" class="menu1"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>课程管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
             <ul class="cl-effect-2">
-                <li><a href="__APP__/Home/Course/newCourse">开设新课程</a></li>
-                <li><a href="__APP__/Home/Course/myCourse?id={$Think.session.id}">管理已有课程</a></li>
+                <switch name="Think.session.category">
+                    <case value="3">
+                        <li><a href="__APP__/Home/Course/newCourse">我的选课</a></li>
+                    </case>
+                    <case value="2">
+                        <li><a href="__APP__/Home/Course/newCourse">开设新课程</a></li>
+                        <li><a href="__APP__/Home/Course/myCourse?id={$Think.session.id}">我的教学</a></li>
+                    </case>
+                    <case value="1">
+                        <li><a href="__APP__/Home/Course/manageCourse?status=0">审核课程</a></li>
+                    </case>
+                </switch>
             </ul>
+            <eq name="Think.session.category" value="1">
+            <li><a href="#" class="menu2"><span class="glyphicon glyphicon-film" aria-hidden="true"></span>视频管理<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+            </li>
+            <ul class="cl-effect-3" style="display: none;">
+                <li><a href="__APP__/Home/Video/manageVideo?status=0">审核视频</a></li>
+            </ul>
+            <li><a href="__APP__/Home/User/manageUser"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>账号管理</a>
+            </li>
             </eq>
             <!-- script-for-menu -->
             <script>
@@ -474,24 +433,13 @@
                         // Animation complete.
                     });
                 });
-            </script>
-            <li><a href="#" class="menu"><span class="glyphicon glyphicon-film glyphicon-king" aria-hidden="true"></span>Sports<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a></li>
-            <ul class="cl-effect-1">
-                <li><a href="sports.html">Football</a></li>
-                <li><a href="sports.html">Cricket</a></li>
-                <li><a href="sports.html">Tennis</a></li>
-                <li><a href="sports.html">Shattil</a></li>
-            </ul>
-            <!-- script-for-menu -->
-            <script>
-                $( "li a.menu" ).click(function() {
-                    $( "ul.cl-effect-1" ).slideToggle( 300, function() {
+                $( "li a.menu2" ).click(function() {
+                    $( "ul.cl-effect-3" ).slideToggle( 300, function() {
                         // Animation complete.
                     });
                 });
             </script>
-            <li><a href="movies.html" class="song-icon"><span class="glyphicon glyphicon-music" aria-hidden="true"></span>Songs</a></li>
-            <li><a href="news.html" class="news-icon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>News</a></li>
+
         </ul>
         <!-- script-for-menu -->
         <script>

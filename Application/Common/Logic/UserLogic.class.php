@@ -72,4 +72,29 @@ class UserLogic
         $result = $user->findByUser($username);
         return $result;
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     * 通过id找用户
+     */
+    public function findById($id)
+    {
+        $user = new UserModel();
+        $result = $user->findById($id);
+
+        return $result;
+    }
+
+    /**
+     * @return mixed
+     * 找所有老师
+     */
+    public function findAllTeacher($num = 8)
+    {
+        $user = new UserModel();
+        $result = $user->findAllTeacher($num);
+
+        return $result;
+    }
 }

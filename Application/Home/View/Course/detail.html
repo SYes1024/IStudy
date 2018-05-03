@@ -22,9 +22,9 @@
             border-top: 3px solid #009dd9;
             border-bottom: none;
             text-align: center;
-            padding-top: 10px;
+            padding-top: 5px;
             font-size: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .nav > li > a{
             padding: 8px 15px;
@@ -78,7 +78,6 @@
                     });
                 }
             });
-
         })
     </script>
 </block>
@@ -87,7 +86,7 @@
         <h3>{$result['title']}</h3>
     </div>
     <div class="container-fluid">
-        <div class="row" style="background: #F8F8F8;padding: 30px 0">
+        <div class="row" style="background: #F8F8F8;padding: 10px 0">
             <div class="col-sm-4" style="margin-bottom: 20px">
                 <img src="<php>
                 if($result['pic'] != '') echo $result['pic'];
@@ -97,15 +96,13 @@
             <div class="col-sm-4 col-sm-4">
                 <div class="detail-text">
                     <span class="span-title">课程难度：</span>
-                    <span class="span-content">{$result.hard}</span>
+                    <span class="span-content">
+                        <img src="__PUBLIC__/images/stars/stars{$result.hard}.gif">
+                    </span>
                 </div>
                 <div class="detail-text">
                     <span class="span-title">上课日期：</span>
                     <span class="span-content">{$result.date}</span>
-                </div>
-                <div class="detail-text">
-                    <span class="span-title">上课时间：</span>
-                    <span class="span-content">{$result.strtime}</span>
                 </div>
                 <div class="detail-text">
                     <span class="span-title">课程时长：</span>
@@ -113,26 +110,83 @@
                 </div>
                 <div class="detail-text">
                     <span class="span-title">限定班级：</span>
-                    <span class="span-content limit-class">{$result.class}</span>
+                    <span class="span-content limit-class" title="{$result.class}">{$result.class}</span>
                 </div>
                 <div class="detail-text">
                     <span class="span-title">已报名人数：</span>
                     <span class="span-content">{$result.people}</span>
                 </div>
                 <div class="detail-text">
-                    <neq name="result['ischoose']" value="true">
-                    <form id="apply">
-                        <input type="hidden" name="course" value="{$result.id}">
-                        <input type="hidden" name="student" value="{$Think.session.id}">
-                        <button class="btn btn-primary" style="padding: 8px 30px;" id="submit">
-                            我要报名
-                        </button>
-                    </form>
+                    <if condition="($Think.session.category gt '') AND (($Think.session.category lt 3) AND (($Think.session.id eq $result['teacher_id']) OR ($Think.session.category eq 1)))">
+                        {/* session不为空，不是学生，老师自己的课,或者是管理员*/}
+                        <a href="__APP__/Home/Course/newCourse?id={$result.id}" class="btn btn-danger" style="padding: 8px 10px;">
+                            编辑
+                        </a>
+                        <a href="__APP__/Home/Course/getSum?id={$result.id}" class="btn btn-success" style="padding: 8px 10px;">
+                            选课情况
+                        </a>
+                        <a href="__APP__/Home/Video/newVideo?id={$result.id}" class="btn btn-primary" style="padding: 8px 10px;">
+                            上传视频
+                        </a>
                     <else/>
-                        <button class="btn btn-success " style="padding: 8px 30px;pointer-events: none;cursor: not-allowed;">
-                            已报名
-                        </button>
-                    </neq>
+                        <eq name="result.class" value="无">
+                            <neq name="result['ischoose']" value="true">
+                                <form id="apply">
+                                    <input type="hidden" name="course" value="{$result.id}">
+                                    <input type="hidden" name="student" value="{$Think.session.id}">
+                                    <button class="btn btn-primary" style="padding: 8px 30px;">
+                                        我要报名
+                                    </button>
+                                </form>
+                                <else/>
+                                <button class="btn btn-success " style="padding: 8px 30px;pointer-events: none;cursor: not-allowed;">
+                                    已报名
+                                </button>
+                                <a id="test" href="javascript:;" class="btn btn-warning " style="padding: 8px 30px;">
+                                    开始测试
+                                </a>
+                                <script>
+                                    $(function () {
+                                        $("#test").click(function () {
+                                            toastr.warning('功能正在建设中...','SORRY');
+                                        });
+                                    })
+                                </script>
+                            </neq>
+                            <else/>
+                            <in name="Think.session.class" value="$result.class">
+                                <neq name="result['ischoose']" value="true">
+                                    <form id="apply">
+                                        <input type="hidden" name="course" value="{$result.id}">
+                                        <input type="hidden" name="student" value="{$Think.session.id}">
+                                        <button class="btn btn-primary" style="padding: 8px 30px;">
+                                            我要报名
+                                        </button>
+                                    </form>
+                                    <else/>
+                                    <button class="btn btn-success " style="padding: 8px 30px;pointer-events: none;cursor: not-allowed;">
+                                        已报名
+                                    </button>
+                                    <a id="test" href="javascript:;" class="btn btn-warning " style="padding: 8px 30px;">
+                                        开始测试
+                                    </a>
+                                    <script>
+                                        $(function () {
+                                            $("#test").click(function () {
+                                                toastr.warning('功能正在建设中...','SORRY');
+                                            });
+                                        })
+                                    </script>
+                                </neq>
+                                <else/>
+                                <button class="btn btn-danger " style="padding: 8px 30px;pointer-events: none;cursor: not-allowed;">
+                                    无法报名
+                                </button>
+                            </in>
+                        </eq>
+
+
+                    </if>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -141,8 +195,12 @@
                 </div>
                 <ul>
                     <li>
-                        <div style="text-align: center">
-                            <img src="{$result['head']}" class="img-circle" width="90px" height="90px">
+                        <div style="text-align: center;padding: 0">
+                            <img src="{$result['head']}" class="img-circle" width="70px" height="70px">
+                            <p style="font-size: 16px;margin: 5px 0">{$result.name}</p>
+                            <div style="margin-top: 5px;line-height: 1.9em;text-align: left;max-height: 190px;overflow: hidden" title="{$result.ubrief}">
+                                {$result.ubrief}
+                            </div>
                         </div>
                     </li>
                     <li></li>
@@ -161,7 +219,7 @@
                 </div>
                 <div class="row course-content-main hidden" id="study" >
                     <volist name="result['video']" id="v" key="k" empty="暂未上传视频">
-                        <a href="__APP__/Home/Video/play?id={$v.id}" type="button" class="col-sm-3 col-xs-12 btn btn-default " style="margin: 3px 0px">{$v.title}</a>
+                        <a href="__APP__/Home/Video/play?id={$v.id}" type="button" class="col-sm-3 col-xs-12 btn btn-default " style="margin: 3px 0px;overflow: hidden" title="{$v.title}">{$v.title}</a>
                     </volist>
                 </div>
             </div>

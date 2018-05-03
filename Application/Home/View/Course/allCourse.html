@@ -8,6 +8,16 @@
         .apply-active{
             color: #00aced;
         }
+        @media (max-width: 480px) {
+            .clearfix-sm:after{
+                clear:both;
+                content:".";
+                display:block;
+                height:0;
+                line-height:0;
+                visibility:hidden;
+            }
+        }
     </style>
 </block>
 <block name="content">
@@ -18,8 +28,9 @@
         <div class="container-fluid">
             <empty name="result">暂无内容</empty>
             <volist name="result" id="v1">
-                    <volist name="v1" id="v2">
-                        <div class="col-md-3 col-sm-4 col-xs-12 resent-grid recommended-grid slider-top-grids">
+                <div class="row">
+                    <volist name="v1" id="v2" key="k">
+                        <div class="col-md-3 col-sm-4 col-xs-12 resent-grid recommended-grid slider-first">
                             <div class="resent-grid-img recommended-grid-img">
                                 <a href="__APP__/Home/Course/detail?id={$v2['id']}">
                                     <img class="img" src="<php>
@@ -34,14 +45,14 @@
                                         {$v2['title']}
                                     </a>
                                 </h3>
-                                <ul>
-                                    <li><p class="author author-info"><eq name="v2['apply']" value="1"><span class="apply-active">报名中</span><else/>已结束</eq></p></li>
-                                    <li class="right-list" style="margin-left: 10px"><p class="views views-info">{$v2['people']}人已报名</p></li>
-                                </ul>
+                                <p class="author author-info"><eq name="v2['apply']" value="1"><span class="apply-active">报名中</span><else/>已结束</eq></p>
+                                    <p class="views views-info" style="text-align: right">{$v2['people']}人已报名</p>
                             </div>
                         </div>
+                        <php>if($k % 2 == 0)echo "<div class='clearfix-sm'></div>";</php>
                     </volist>
                 <div class="clearfix"> </div>
+                </div>
             </volist>
             <div class="clearfix"> </div>
             <div class="row">

@@ -27,8 +27,8 @@ class CommentLogic
     public function findByVideo($id = 0, $type = 1)
     {
         $comm = new CommentModel();
-        $result = $comm->findByVideo($id, $type);
+        $comment = $comm->findByVideo($id, $type);
 
-        return $result;
+        return $comment;
     }
 }

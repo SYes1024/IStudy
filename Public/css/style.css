@@ -186,6 +186,18 @@ ul.cl-effect-1,ul.cl-effect-2 {
 	margin: 0 2em 0 0;
     font-size: 16px !important;
 }
+.glyphicon-list {
+	margin: 0 2em 0 0;
+    font-size: 16px !important;
+}
+.glyphicon-book {
+	margin: 0 2em 0 0;
+    font-size: 16px !important;
+}
+.glyphicon-user {
+	margin: 0 2em 0 0;
+    font-size: 16px !important;
+}
 .glyphicon-music {
     margin: 0 2em 0 0;
     font-size: 16px !important;
@@ -2213,7 +2225,7 @@ background: url(../images/social.png) no-repeat 0px 0px;
 		border: none;
 	}
 	form.navbar-form.navbar-right {
-		width: 38%;
+		width: 100%;
 		margin: 0;
 	}
 	.top-search form input[type="submit"] {
@@ -2244,7 +2256,7 @@ background: url(../images/social.png) no-repeat 0px 0px;
 		border: none;
 	}
 	form.navbar-form.navbar-right {
-		width: 38%;
+		width: 100%;
 		margin: 0;
 	}
 	.top-search form input[type="submit"] {
@@ -2384,12 +2396,6 @@ background: url(../images/social.png) no-repeat 0px 0px;
 	}
 	.resent-grid-info p.author a.author {
 		padding-left: 2em;
-	}
-	.slider-first:nth-child(3){
-		display:none;
-	}
-	.slider-first:nth-child(4){
-		display:none;
 	}
 	.slider-first{
 		width: 50%;

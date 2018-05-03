@@ -1,0 +1,121 @@
+<extend name="Public:menu"/>
+<block name="head">
+    <link href="__PUBLIC__/plugins/fileinput/css/fileinput.css" rel="stylesheet">
+    <script src="__PUBLIC__/plugins/fileinput/js/fileinput.js"></script>
+</block>
+<block name="content">
+    <div class="recommended-info">
+        <h3>视频上传</h3>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <h4>正在为《{$course.title}》上传视频</h4>
+            <div class="col-sm-8">
+                <form enctype="multipart/form-data" id="videoform">
+                    <div class="form-group">
+                        <label for="title">视频标题</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="视频标题不超过50字" value="{$video.title}">
+                        <span class="msg-box" id="titleMsg"></span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            <label for="video">上传视频</label>
+                            <input type="file" id="video"  name="video[]" accept="video/mp4">
+                        </div>
+                    </div>
+                    <div id="hidden">
+                        <input type="hidden" name="up_id" value="{$Think.session.id}">
+                        <input type="hidden" name="course_id" value="{$course.id}">
+                        <input type="hidden" value="{$video.upload}" id="upload" name="upload">         <input type="hidden" value="{$video.size}" id="size" name="size">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary mybtn" value="">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#video").fileinput({
+            previewFileType:'video',
+            language: 'zh',
+            dropZoneTitle: "请上传MP4格式视频",
+            showCaption:false,//显示输入栏
+            showRemove:false,
+            uploadUrl:'__APP__/Home/Video/upload/rootpath/course/savepath/video/size/52428800',//上传地址
+            allowedFileExtensions : ['mp4'],//允许的文件后缀
+            maxFilesNum: 1,//最大文件上传数量
+            //previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            //showUploadedThumbs:false,
+            deleteUrl:'__APP__/Home/Video/delete',
+            enctype: 'multipart/form-data',
+            initialPreviewAsData: true,
+            initialPreview: [
+            <notempty name="video.upload">
+            "{video.upload}"
+            </notempty>
+        ],    //初始化预览
+        initialPreviewConfig: [
+        <notempty name="video.upload">
+            {
+                type:'video',
+                filetype:'video/mp4',
+                width: '213.33px',
+                url: '__APP__/Home/Video/delete', // 删除地址
+                key: "{$video.upload}",
+                size:"{$video.size}"
+                // extra: {id: 100}
+                //previewAsData:false,
+            }
+            </notempty>
+        ],//初始化预览配置
+        }).on("fileuploaded", function(event, data,previewId,index){
+//                $("#showpic").fileinput({
+//                    initialPreview: [ data['initialPreview']['file_data']],
+//                    initialPreviewConfig: [
+//                        data['initialPreviewConfig']['file_data']
+//                    ]
+//                });
+            $("#upload").val(data.response['initialPreview'][0]);
+            $("#size").val(data.response['initialPreviewConfig'][0]['size']);
+        }).on("filedeleted",function(event,key){          //删除回调函数
+            $("#upload").val("");
+            $("#size").val('0');
+        });
+    </script>
+    <script>
+        $('#videoform').validator({
+            fields: {
+                title: {
+                    rule: "required; length(~50)",
+                    msg: {
+                        required: "视频标题名必填",
+                    },
+                    ok: "",
+                    timely: 1,
+                    target: "#titleMsg",
+                }
+            },
+            valid: function(form) {
+                $.ajax({
+                    url: "__APP__/Home/Video/add",
+                    type: "POST",
+                    async: true,
+                    data: $("#videoform").serialize(),
+                    success: function (data) {
+                        if (data['code'] == 1) {
+                            toastr.success(data['msg'], 'OK');
+                            setTimeout(function () {
+                                window.location.href = "__APP__/Home/Course/detail?id={$Think.session.id}";
+                            }, 2000);
+                        } else {
+                            toastr.error(data['msg'], 'ERROR');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</block>

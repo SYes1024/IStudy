@@ -8,6 +8,7 @@
 
 namespace Common\Model;
 use Think\Model\RelationModel;
+use Org\Util\Page;
 
 class UserModel extends RelationModel
 {
@@ -70,5 +71,37 @@ class UserModel extends RelationModel
 
         $result = M('User')->data($data)->add();
         return $result;
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     * 通过id找用户
+     */
+    public function findById($id = 0)
+    {
+        $where['id'] = $id;
+        $result = M('User')->where($where)->find();
+
+        return $result;
+    }
+
+    /**
+     * @param int $num
+     * @return mixed
+     * 找所有老师
+     */
+    public function findAllTeacher($num = 8)
+    {
+        $model = M('User');
+        $where['category'] = 2;
+        $count = $model->where($where)->count();//总数
+        $Page = new Page($count,$num);//分页实例化
+        $pageShow = $Page->show();// 分页显示输出
+        $result = $model->where($where)->order('id desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        $return['result'] = $result;
+        $return['page'] = $pageShow;
+
+        return $return;
     }
 }

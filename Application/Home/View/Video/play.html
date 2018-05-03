@@ -1,6 +1,12 @@
 <extend name="Public:menu"/>
 <block name="head">
+    <script src="__PUBLIC__/js/qrcode.min.js"></script>
     <style>
+        #qrcode{
+            position: absolute;
+            top:10px;
+            right: 110px;
+        }
         ul{
             padding-left: 0;
         }
@@ -173,23 +179,39 @@
     <div class="row mywrap">
         <div class="col-sm-12" >
             <div class="title" style="overflow: hidden">
-                <h1>视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题视频标题</h1>
+                <h1>{$video.title}</h1>
             </div>
             <div style="position: relative">
-            <video id="myvideo" src="/IStudy/Upload/video/4.mp4" controls class="myvideo" playsinline -webkit-playsinline>
-            </video>
-            <ul class="video-ul" id="video-ul">
-                <li class="video-ul-li">
-                    <a href="javascript:void(0)">收藏</a>
-                </li>
-                <li class="video-ul-li">
-                    <a href="javascript:void(0)">在手机上看</a>
-                </li>
-            </ul>
+                <video id="myvideo" src="/IStudy/Upload/video/4.mp4" controls class="myvideo" playsinline -webkit-playsinline>
+                </video>
+                <ul class="video-ul" id="video-ul">
+                    <li class="video-ul-li">
+                        <a href="javascript:void(0)">收藏</a>
+                    </li>
+                    <li class="video-ul-li">
+                        <a href="javascript:void(0)" id="mobile">在手机上看</a>
+                        <div id="qrcode" style="display: none"></div>
+                    </li>
+                </ul>
+
             </div>
         </div>
 
     </div>
+
+        <script type="text/javascript">
+            $(function () {
+                var now = window.location.href;
+                new QRCode(document.getElementById("qrcode"), {
+                    text: now+"&user="+{$Think.session.id},
+                    width:200,
+                    height:200
+                });
+                $("#mobile").hover(function () {
+                    $("#qrcode").toggle();
+                })
+            });
+        </script>
     <div class="row">
         <div class="col-sm-7">
             <ul class="video-menu">
@@ -203,14 +225,14 @@
                         <span class="msg-box" id="contenMsg"></span>
                     </div>
                     <input type="hidden" name="user_id" value="{$Think.session.id}">
-                    <input type="hidden" name="video_id" value="{$video}">
+                    <input type="hidden" name="video_id" value="{$video.id}">
                     <div class="form-group">
                     <button class="btn btn-default" type="submit">发表评论</button>
                     </div>
                 </form>
                 <div style="border-top: 1px solid #d9dde1;">
                     <ul id="comment-ul">
-                        <volist name="comment" id="v">
+                        <volist name="comment" id="v" empty="暂无评论">
                         <li style="padding: 20px 24px;border-bottom: 1px solid #d9dde1;">
                             <div class="li-avator">
                                 <img src="{$v['head']}">
@@ -225,19 +247,6 @@
                             </div>
                         </li>
                         </volist>
-                        <li style="padding: 20px 24px;border-bottom: 1px solid #d9dde1;">
-                            <div class="li-avator">
-                                <img src="/IStudy/Upload/course/showimage/2018/04-13/5ad01cd7f1666.jpg">
-                            </div>
-                            <div class="li-main">
-                                <div class="li-main-name">姓名</div>
-                                <div class="li-main-content">说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容说的内容</div>
-                                <div class="li-main-btm clearfix">
-                                    <span style="float: left;">2018-02-02 11:11:11</span>
-                                    <a style="float: right;" href="javascript:void(0)"><i class="glyphicon glyphicon-thumbs-up"></i><span>2</span></a>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -246,10 +255,9 @@
             <div class="">
                 <h3>学霸榜</h3>
                 <ul>
-                    <li>名字   学习时长：2221小时</li>
-                    <li>名字   学习时长：2221小时</li>
-                    <li>名字   学习时长：2221小时</li>
-                    <li>名字   学习时长：2221小时</li>
+                    <volist name="studyRank" id="v">
+                        <li>{$v.name}   学习时长：{$v.totaltime}小时</li>
+                    </volist>
                 </ul>
             </div>
             <div>

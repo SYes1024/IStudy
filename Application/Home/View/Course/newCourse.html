@@ -21,11 +21,6 @@
                     <span class="msg-box" id="dateMsg"></span>
                 </div>
                 <div class="form-group">
-                    <label for="title">上课时间</label>
-                    <input type="text" class="form-control" id="time" name="time" placeholder="格式: 每周三20:00">
-                    <span class="msg-box" id="timeMsg"></span>
-                </div>
-                <div class="form-group">
                     <label for="title" style="margin-right: 20px">课程总时长</label>
                     <input type="text" class="form-control" id="sumtime" name="sumtime" placeholder="整数,格式: 8" style="max-width: 200px">
                     <label for="title">小时</label>
@@ -45,7 +40,7 @@
                 </div>
                 <div class="form-group">
                     <label for="title">限定班级</label>
-                    <textarea type="text" class="form-control" id="class" name="class" placeholder="格式：无 或 网络工程141、网络工程142" high="300px"></textarea>
+                    <textarea type="text" class="form-control" id="class" name="class" placeholder="格式：无 或 网络工程141,网络工程142" high="300px"></textarea>
                     <span class="msg-box" id="classMsg"></span>
                 </div>
                 <div class="form-group">
@@ -91,15 +86,6 @@
                         timely: 1,
                         target: "#dateMsg",
                     },
-                    time: {
-                        rule: "required; time",
-                        msg: {
-                            required: "上课时间必填",
-                        },
-                        ok: "",
-                        timely: 1,
-                        target: "#timeMsg",
-                    },
                     sumtime: {
                         rule: "required; integer(+)",
                         msg: {
@@ -110,9 +96,9 @@
                         target: "#sumtimeMsg",
                     },
                     class: {
-                        rule: "required; class",
+                        rule: "required",
                         msg: {
-                            required: "上课时间必填",
+                            required: "上课班级必填",
                         },
                         ok: "",
                         timely: 1,
@@ -121,8 +107,7 @@
                 },
                 rules:{
                     date:[/^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))?(?:至)([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/,"请检查填写的日期或格式是否正确"],
-                    time:[/([\u4e00-\u9fa5]+)|(^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/,"请检查填写的时间格式是否正确"],
-                    class:[/^([\u4e00-\u9fa5]+|\d+|[、])+$/]
+                    time:[/([\u4e00-\u9fa5]+)|(^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/,"请检查填写的时间格式是否正确"]
                 },
                 valid: function(form) {
                     $.ajax({

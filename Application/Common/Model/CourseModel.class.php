@@ -26,7 +26,9 @@ class CourseModel extends RelationModel
     /**
      * @param $title
      * @param $teacher_id
-     * @param $date  日期，包含开始和结束
+     * @param $date
+     * @param $datearr 数组，0开始日期，1结束日期
+     * @param $strtime
      * @param $time
      * @param $sumtime
      * @param $hard
@@ -37,14 +39,12 @@ class CourseModel extends RelationModel
      * @return mixed
      * 添加课程
      */
-    public function addCourse($title, $teacher_id, $date, $datearr, $strtime, $time, $sumtime, $hard, $class, $brief="", $pic="", $pass=0)
+    public function addCourse($title, $teacher_id, $date, $datearr, $sumtime, $hard, $class, $brief="", $pic="/IStudy/Upload/course/showimage/default.png", $pass=0)
     {
         $data['title'] = $title;
         $data['date'] = $date;
         $data['startdate'] = $datearr[0];
         $data['enddate'] = $datearr[1];
-        $data['strtime'] = $strtime;
-        $data['time'] = $time;
         $data['sumtime'] = $sumtime;
         $data['hard'] = $hard;
         $data['class'] = $class;
@@ -65,7 +65,7 @@ class CourseModel extends RelationModel
      * @return mixed
      * 根据条件查询课程
      */
-    public function findByType($type, $condition = null, $pass = -1, $num = 8, $order = 'pass,create_time desc', $fields = "", $join = "")
+    public function findByType($type, $condition = null, $pass = -1, $num = 8, $order = 'pass,id desc', $fields = "", $join = "")
     {
         $model = M('Course');
         switch ($type){
@@ -112,10 +112,74 @@ class CourseModel extends RelationModel
         return $result;
     }
 
+    /**
+     * @param $id
+     * @param string $fields
+     * @param string $join
+     * @return mixed
+     * 查找一门课的详情
+     */
     public function findOne($id, $fields = "", $join = "")
     {
         $where['course.id'] = $id;
         $result = M('Course')->field($fields)->join($join)->where($where)->find();
+
+        return $result;
+    }
+
+    /**
+     * @param $pic
+     * @return bool
+     * 数据库中图片地址清除
+     */
+    public function delImg($pic)
+    {
+        $where['pic'] = $pic;
+        $result = M('Course')->where($where)->setField('pic','');
+
+        return $result;
+    }
+
+    /**
+     * @param $data
+     * @return bool
+     * 更新课程
+     */
+    public function updateCourse($data)
+    {
+        $data['pass'] = 0;//重新变为审核状态
+
+        $result = M('Course')->data($data)->save();
+
+        return $result;
+    }
+
+    /**
+     * @param string $condition
+     * @param string $order
+     * @param int $limit
+     * @return mixed
+     * 查找限定数量的课
+     */
+    public function findLimit($condition = '',$order = 'id desc', $limit =4)
+    {
+        $result = M('Course')->where($condition)->order($order)->limit($limit)->select();
+
+        return $result;
+    }
+
+    /**
+     * @param $id
+     * @param int $status
+     * @return bool
+     * 更新审核状态
+     */
+    public function verifyCourse($id, $status = 0, $reason = "")
+    {
+        $where['id'] = $id;
+        $data['pass'] = $status;
+        $data['reason'] = $reason;
+        $result = M('Course')->where($where)->data($data)->save();
 
         return $result;
     }

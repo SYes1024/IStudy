@@ -1,0 +1,45 @@
+<extend name="Public:menu"/>
+<block name="head">
+</block>
+<block name="content">
+    <div class="recommended-info">
+        <h3>课程管理</h3>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <a href="#" class="btn btn-primary">添加教师账号</a>
+        </div>
+
+        <div class="row">
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>账号</th>
+                    <th>姓名</th>
+                    <th>邮箱</th>
+                    <th>创建时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="result" id="v">
+                    <tr>
+                        <td>{$v.id}</td>
+                        <td>{$v.username}</td>
+                        <td>{$v.name}</td>
+                        <td>{$v.email}</td>
+                        <td>{$v.create_time}</td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pagination">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

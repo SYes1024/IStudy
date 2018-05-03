@@ -138,6 +138,7 @@ class LoginController extends Controller
             session('category', $result['category']);
             session('username', $username);
             session('name', $result['name']);
+            session('class', $result['class']);
             $this->ajaxReturn(array('code' => '1', 'msg' => "登录成功"));
         }else{
             $this->ajaxReturn(array('code' => '0', 'msg' => "密码错误"));
