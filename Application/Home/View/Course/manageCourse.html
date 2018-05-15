@@ -3,7 +3,13 @@
 </block>
 <block name="content">
     <div class="recommended-info">
-        <h3>课程管理</h3>
+        <h3>
+            <neq name="Think.get.type" value="teacher">
+                课程管理
+                <else/>
+                我的教学
+            </neq>
+        </h3>
     </div>
     <div class="container-fluid">
         <form id="status-form">
@@ -24,7 +30,11 @@
         <script>
             $(function () {
                 $("#status").change(function () {
+                    <eq name="Think.get.type" value="teacher">
+                    window.location.href="__APP__/Home/Course/manageCourse?status="+$(this).val()+"&type=teacher&id="+{$Think.session.id};
+                    <else/>
                     window.location.href="__APP__/Home/Course/manageCourse?status="+$(this).val();
+                    </eq>
                 })
             })
         </script>
@@ -35,22 +45,32 @@
                     <th>序号</th>
                     <th>课程名</th>
                     <th>状态</th>
+                    <neq name="Think.get.type" value="teacher">
                     <th>申请人</th>
+                    </neq>
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
             </thead>
             <tbody>
             <volist name="result" id="v">
-                <tr>
+                <neq>
                     <td>{$v.id}</td>
                     <td><a href="__APP__/Home/Course/detail?id={$v.id}">{$v.title}</a></td>
                     <td>{$v.pass}</td>
+                    <neq name="Think.get.type" value="teacher">
                     <td>{$v.name}</td>
+                    </neq>
                     <td>{$v.create_time}</td>
                     <td>
+                    <neq name="Think.get.type" value="teacher">
                         <a class="btn btn-success" href="javascript:;" role="button" id="pass" data-id="{$v.id}">通过</a>
                         <a class="btn btn-danger" data-toggle="modal" data-target="#myModal" role="button">驳回</a>
+                        <else/>
+                        <a class="btn btn-primary" href="__APP__/Home/Course/detail?id={$v['id']}" role="button">查看</a>
+                        <a class="btn btn-danger" href="__APP__/Home/Course/newCourse?id={$v['id']}">编辑</a>
+                    </neq>
+
                     </td>
                 </tr>
             </volist>

@@ -75,6 +75,9 @@ class CourseModel extends RelationModel
             case 'teacher':
                 $where['teacher_id'] = $condition;
                 break;
+            case 'student':
+                $where = array();
+                break;
             case 'search':
                 $where['title'] = array('like',"%$condition%");
                 break;
@@ -85,7 +88,7 @@ class CourseModel extends RelationModel
         if($pass != -1){
             $where['pass'] = $pass;
         }
-        $count = $model->where($where)->count();//总数
+        $count = $model->where($where)->join($join)->count();//总数
         $Page = new Page($count,$num);//分页实例化
         $pageShow = $Page->show();// 分页显示输出
         $result = $model->field($fields)->join($join)->where($where)->order($order)->limit($Page->firstRow.','.$Page->listRows)->select();

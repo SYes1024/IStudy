@@ -3,11 +3,43 @@
 </block>
 <block name="content">
     <div class="recommended-info">
-        <h3>课程管理</h3>
+        <h3>账号管理</h3>
+    </div>
+    <div id="small-dialog4" class="mfp-hide">
+        <h3>添加教师账号</h3>
+        <div class="col-sm-12 col-md-6 col-md-offset-3 login1">
+            <form id="form4" data-validator-option="{theme:'bootstrap', timely:2, stopOnError:true}">
+                <div class="form-group">
+                    <label class="control-label">账号</label>
+                    <input type="text" class="form-control" name="username">
+                    <span class="msg-box" id="usernameMsg4"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">密码</label>
+                    <input type="password" class="form-control" name="password">
+                    <span class="msg-box" id="pwdMsg4"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">姓名</label>
+                    <input type="text" class="form-control" name="name" placeholder="如：张三">
+                    <span class="msg-box" id="nameMsg4"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <input type="text" class="form-control" name="email" id="email">
+                    <span class="msg-box" id="emailMsg4"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">添加</button>
+                    <button type="reset" class="btn btn-default">重置</button>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"> </div>
     </div>
     <div class="container-fluid">
         <div class="row">
-            <a href="#" class="btn btn-primary">添加教师账号</a>
+            <a href="#small-dialog4" class="btn btn-primary play-icon popup-with-zoom-anim">添加教师账号</a>
         </div>
 
         <div class="row">
@@ -42,4 +74,76 @@
             </div>
         </div>
     </div>
+    <script>
+        $(function () {
+            $.validator("#form4", {
+                fields: {
+                    username: {
+                        rule: "required; length(6~);remote(get:__APP__/Home/Login/usernameOk)",
+                        msg: {
+                            required: "请填写账号",
+                            length:"至少填写6位账号",
+                        },
+                        tip: "用于登录的账号",
+                        ok: "名字可以使用",
+                        timely: 1,
+                        target: "#usernameMsg4",
+                    },
+                    password: {
+                        rule: "密码:required; length(6~)",
+                        msg: {
+                            required: "请填写密码",
+                            length:"至少填写6位数密码",
+                        },
+                        tip: "用于登录的密码",
+                        ok: "",
+                        timely: 3,
+                        target: "#pwdMsg4"
+                    },
+                    name: {
+                        rule: "required",
+                        msg: {
+                            required: "请填写姓名",
+                        },
+                        tip: "填写真实姓名有助于朋友找到你",
+                        ok: "",
+                        timely: 1,
+                        target: "#nameMsg4"
+                    },
+                    email: {
+                        rule: "required;email; remote(get:__APP__/Home/Login/emailOk)",
+                        msg: {
+                            required: "请填写邮箱",
+                        },
+                        tip: "邮箱用于验证",
+                        ok: "",
+                        timely: 1,
+                        target: "#emailMsg4",
+                    },
+                },
+                messages: {
+                    email: "请填写正确的邮箱",
+                },
+                valid: function(form){
+                    // 表单验证通过，提交表单
+                    $.ajax({
+                        url: "__APP__/Home/User/addTeacher",
+                        type: "POST",
+                        async: true,
+                        data: $("#form4").serialize(),
+                        success: function (data) {
+                            if (data['code'] == 1) {
+                                toastr.success(data['msg'], 'OK');
+                                setTimeout(function() {
+                                    window.location.href = "__APP__/Home";
+                                }, 2000);
+                            } else {
+                                toastr.error(data['msg'], 'ERROR');
+                            }
+                        }
+                    });
+                }
+            });
+        })
+    </script>
 </block>

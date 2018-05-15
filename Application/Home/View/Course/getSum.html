@@ -6,11 +6,17 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <h4>正在查看《{$course.title}》的选课情况</h4>
+            <h3>正在查看《<a href="__APP__/Home/Course/detail?id={$Think.get.id}"> {$title}</a>》的选课情况</h3>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <p>当前已报名人数：</p>
+                <h4>当前已报名人数：{$count}</h4>
+            </div>
+            <div class="col-sm-12">
+                <h4>报名人员：</h4>
+                <volist name="choose" id="v" empty="暂无报名人员">
+                    <span style="margin: 0 10px">{$v.name}</span>
+                </volist>
             </div>
         </div>
     </div>

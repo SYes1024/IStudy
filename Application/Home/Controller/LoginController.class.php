@@ -84,6 +84,7 @@ class LoginController extends Controller
         $pwdAgain = I('post.pwdAgain');
         $email = I('post.email');
         $name = I('post.name');
+        $class = I('post.class');
         $verCode = I('post.verCode');
 
         $user = new UserLogic();
@@ -108,7 +109,7 @@ class LoginController extends Controller
         elseif($verCode != session('verCode')){ //验证码验证
             $this->ajaxReturn(array('code' => '0', 'msg' => "验证码错误"));
         }else{
-            $result = $user->addStu($username, $password, $email, $name);
+            $result = $user->addStu($username, $password, $email, $name,$class);
             if (!$result){
                 $this->ajaxReturn(array('code' => '0', 'msg' => "注册失败"));
             }else{

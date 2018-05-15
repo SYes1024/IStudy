@@ -31,4 +31,15 @@ class CommentLogic
 
         return $comment;
     }
+
+    public function addZan($id = 0)
+    {
+        $comm = new CommentModel();
+        $result = $comm->addZan($id);
+        if($result){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

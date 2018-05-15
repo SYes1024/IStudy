@@ -142,4 +142,21 @@ class VideoController extends Controller
             $this->ajaxReturn(array('code' => 0, 'msg' => '审核失败'));
         }
     }
+
+    /**
+     * 功能：添加学习时间
+     */
+    public function addLearnTime()
+    {
+        $time = I('get.time');
+        $student_id = I('get.student_id');
+        $course_id = I('get.course_id');
+        $video = new VideoLogic();
+        $result = $video->addLearnTime($time,$student_id,$course_id);
+        if($result){
+            $this->ajaxReturn(array('code' => 1, 'msg' => '上传成功'));
+        }else{
+            $this->ajaxReturn(array('code' => 0, 'msg' => '上传失败'));
+        }
+    }
 }

@@ -12,6 +12,7 @@ use Think\Controller;
 use Common\Logic\CourseLogic;
 use Common\Logic\ChooseLogic;
 use Common\Logic\VideoLogic;
+use Common\Logic\QuestionLogic;
 
 class CourseController extends Controller
 {
@@ -88,17 +89,38 @@ class CourseController extends Controller
     }
 
     /**
-     * 页面:教师管理课程
+     * 页面:学生已选课界面
      */
     public function myCourse()
     {
+        $id = I('get.id');
         $course = new CourseLogic();
-        $teacher_id = I('get.id');
-        $result = $course->findMyCourse($teacher_id);
+        $result = $course->findMyCourse('student',$id);
+        $this->assign('result', $result['result']);
+        $this->assign('page', $result['page']);
+        $this->display();
+    }
+
+    /**
+     * 页面:管理员课程管理
+     */
+    public function manageCourse()
+    {
+
+        $course = new CourseLogic();
+        $status = I('get.status');
+        if(I('get.type') == 'teacher'){
+            $teacher_id = I('get.id');
+            $result = $course->findMyCourse('teacher', $teacher_id, $status);
+            //dump($result);
+        }else{
+            $result = $course->findAll('manage', $status);
+        }
 
         $this->assign('result', $result['result']);
         $this->assign('page', $result['page']);
         $this->display();
+
     }
 
     /**
@@ -135,21 +157,6 @@ class CourseController extends Controller
         $result['video'] = $allVideo;
         $this->assign('result', $result);
         $this->display();
-    }
-
-    /**
-     * 页面:管理员课程管理
-     */
-    public function manageCourse()
-    {
-        $status = I('get.status');
-        $course = new CourseLogic();
-        $result = $course->findAll('manage', $status);
-
-        $this->assign('result', $result['result']);
-        $this->assign('page', $result['page']);
-        $this->display();
-
     }
 
     /**
@@ -222,9 +229,116 @@ class CourseController extends Controller
     /**
      * 页面：选课情况汇总
      */
-    public function getSum(){
+    public function getSum()
+    {
         $id = I('get.id');
+        $course = new CourseLogic();
 
+        $result = $course->getCourseSum($id);
+
+        $this->assign('title',$result['course_name']);
+        $this->assign('choose',$result['choose']);
+        $this->assign('count',$result['count']);
+
+        $this->display();
+    }
+
+    /**
+     * 功能：导入excel数据
+     */
+    public function import_question()
+    {
+        $root = 'course';
+        $save = 'excel';
+        $size = 10485760;
+
+        $result = upload('excel', $root, $save, $size);
+
+        if($result['code']) {
+            $pFilename = $result['fileinfo'];
+            $data = import_excel($pFilename);
+            $question = new QuestionLogic();
+            $result2 = $question->insertInto($data);
+            if($result2){
+                $this->success("导入成功");
+            }else{
+                $this->error('导入至数据库失败');
+            }
+        }else{
+            $this->error('上传失败');
+        }
+    }
+
+    /**
+     * 页面：题库管理
+     */
+    public function question_import()
+    {
+        $this->display();
+    }
+
+    /**
+     * 页面：获得测试考题页面
+     */
+    public function getTest()
+    {
+        $course_id = I('get.id');
+        $course = new CourseLogic();
+        $course_result = $course->findOne($course_id);
+        $course_title = $course_result['title'];
+
+        Vendor('scws.pscws4');
+        $pscws = new \PSCWS4();
+        $pscws->set_dict(VENDOR_PATH.'scws/lib/dict.utf8.xdb');
+        $pscws->set_rule(VENDOR_PATH.'scws/lib/rules.utf8.ini');
+        $pscws->set_ignore(true);
+        $pscws->send_text($course_title);
+        $words = $pscws->get_tops(5);
+        $tags = array();
+        foreach ($words as $val) {
+            $tags[] = $val['word'];
+        }
+        $pscws->close();
+        $question = new QuestionLogic();
+        foreach ($tags as $k => $v){
+            $result = $question->findByWord($v);
+            foreach($result as $v2){
+                $result2[] = $v2;
+            }
+        }
+        $result2 = array_unique_fd($result2);//去重复
+        $result2 = array_slice($result2,1,5);//最后取其中前5个
+
+        for ($i=1;$i<6;$i++){
+            $answer[$i] = $result2[$i-1]['answer'];
+        }
+        session('answer', $answer);
+        $this->assign('course_id', $course_id);
+        $this->assign('course_title', $course_title);
+        $this->assign('result', $result2);
+        //dump(session('answer'));
+        $this->display();
+    }
+
+    /**
+     * 页面：测试结果
+     */
+    public function submitTest()
+    {
+        $answer = session('answer');
+        $true_num = 0;
+        $false_num = 0;
+        for($i=1;$i<6;$i++){
+            $user_answer = I("post.item$i");
+            if($answer[$i] == $user_answer){
+                $true_num += 1;
+            }else{
+                $false_num += 1;
+            }
+        }
+
+        $this->assign('true_num', $true_num);
+        $this->assign('false_num', $false_num);
         $this->display();
     }
 }

@@ -791,7 +791,7 @@ button::-moz-focus-inner {
 	margin:0;
 }
  #small-dialog4 {
-  max-width: 33%;
+  max-width: 64%;
 }
  #small-dialog5 {
   max-width: 33%;
@@ -830,7 +830,7 @@ button::-moz-focus-inner {
   margin: 4em 0 0 0;
 }
  #small-dialog6{
-  max-width: 33%;
+  max-width: 64%;
   text-align:left;
 }
 .video-information-text h4{

@@ -16,7 +16,7 @@
     <link href="__PUBLIC__/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
     <link href="__PUBLIC__/css/toastr.min.css" rel="stylesheet">
     <link href="__PUBLIC__/plugins/nice-validator/jquery.validator.css" rel="stylesheet">
-
+    <link href="__PUBLIC__/plugins/fileinput/css/fileinput.css" rel="stylesheet">
     <!-- js start-->
     <script src="__PUBLIC__/js/jquery-2.1.4.js"></script>
     <script src="__PUBLIC__/js/bootstrap.min.js"></script>
@@ -24,7 +24,7 @@
     <script src="__PUBLIC__/js/jquery.magnific-popup.js" type="text/javascript"></script>
     <script src="__PUBLIC__/js/toastr.min.js"></script>
     <script src="__PUBLIC__/plugins/nice-validator/jquery.validator.min.js?local=zh-CN"></script>
-
+    <script src="__PUBLIC__/plugins/fileinput/js/fileinput.js"></script>
     <script>
         $(document).ready(function() {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -39,9 +39,36 @@
                 mainClass: 'my-mfp-zoom-in'
             });
 
+            $("#headUp").fileinput({
+                language: 'zh',
+                //dropZoneTitle: "",
+                showCaption:false,//显示输入栏
+                showRemove:false,
+                uploadUrl:'__APP__/Home/Course/imgUp/rootpath/user/savepath/head/size/5242880',//上传地址
+                allowedFileExtensions : ['jpg', 'png', 'jpeg'],//允许的文件后缀
+                maxFilesNum: 1,//最大文件上传数量
+                //previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                //showUploadedThumbs:false,
+                deleteUrl:'__APP__/Home/Course/imgDel',
+                enctype: 'multipart/form-data',
+                //initialPreviewAsData: true,
+                showPreview:false
+        }).on("fileuploaded", function(event, data,previewId,index){
+                $("#editHead").attr('src',data.response['initialPreview'][0]);
+                $("#headUpPic").val(data.response['initialPreview'][0]);
+            }).on("filedeleted",function(event,key){          //删除回调函数
+                $("#headUpPic").val("");
+            });
         });
+
     </script>
     <style>
+        #editHead {
+            border-radius: 50%;
+            border: 0;
+            width: 80px;
+            height: 80px;
+        }
         .signup {
             float: none !important;
             margin: auto;
@@ -224,6 +251,51 @@
                     });
                 }
             });
+
+            $('#rePwd').validator({
+                fields: {
+                    password2: {
+                        rule: "密码:required; length(6~)",
+                        msg: {
+                            required: "请填写密码",
+                            length:"至少填写6位数密码",
+                        },
+                        tip: "用于登录的密码",
+                        ok: "",
+                        timely: 3,
+                        target: "#pwdMsg2"
+                    },
+                    pwdAgain2: {
+                        rule:"required; match(password2)",
+                        msg: {
+                            required: "请填写密码",
+                            match:"两次密码不一致",
+                        },
+                        tip: "请确保两次密码一致",
+                        ok: "",
+                        timely: 3,
+                        target: "#verMsg2"
+                    },
+                },
+                valid: function(form){
+                    $.ajax({
+                        url: "__APP__/Home/User/editPwd",
+                        type: "POST",
+                        async: true,
+                        data: $("#rePwd").serialize(),
+                        success: function (data) {
+                            if (data['code'] == 1) {
+                                toastr.success(data['msg'], 'OK');
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000);
+                            } else {
+                                toastr.error(data['msg'], 'ERROR');
+                            }
+                        }
+                    });
+                }
+            });
             /**
              * 邮箱验证下一步
              */
@@ -258,6 +330,39 @@
                 });
             });
 
+            $("#editData").click(function () {
+                $.ajax({
+                    url: "__APP__/Home/User/getUserData?id={$Think.session.id}",
+                    type: "get",
+                    success: function (data) {
+                        if (data['code'] == 1) {
+                            $('#editClass').val(data['data']['class']);
+                            $('#editEmail').val(data['data']['email']);
+                            $('#editBrief').val(data['data']['brief']);
+                            $('#headUpPic').val(data['data']['head']);
+                            $('#editHead').attr('src', data['data']['head']);
+                        }
+                    }
+                });
+            });
+
+            $("#editSub").click(function () {
+                $.ajax({
+                    url: "__APP__/Home/User/editUser",
+                    type: "post",
+                    data: $("#editMsg").serialize(),
+                    success: function (data) {
+                        if (data['code'] == 1) {
+                            toastr.success(data['msg'], 'OK');
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2000);
+                        } else {
+                            toastr.error(data['msg'], 'ERROR');
+                        }
+                    }
+                });
+            });
         });
     </script>
     <block name="head"></block>
@@ -296,7 +401,14 @@
                         <a href="#small-dialog" class="play-icon popup-with-zoom-anim">登录</a>
                     </div>
                 <else />
-                    欢迎,{$Think.session.name},<button id="loginOut">退出</button>
+
+                    <div class="signin">
+                        <span>欢迎,{$Think.session.name}</span>
+                        <a href="#small-dialog6" class="play-icon popup-with-zoom-anim" style="padding: 5px 5px;" id="editData">个人信息</a>
+                        <a href="#small-dialog7" class="play-icon popup-with-zoom-anim" style="padding: 5px 5px;">修改密码</a>
+                        <a href="#" id="loginOut" class="play-icon popup-with-zoom-anim" style="padding: 5px 5px;">退出</a>
+                    </div>
+
                 </empty>
 
                 <!-- 登录框-->
@@ -325,6 +437,59 @@
                         <div class="forgot">
                             <a href="#">忘记密码?</a>
                         </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <!-- 修改信息-->
+                <div id="small-dialog6" class="mfp-hide">
+                    <h3>修改信息</h3>
+                    <div class="col-sm-12 col-md-6 col-md-offset-3 login1">
+                        <form id="editMsg" data-validator-option="{theme:'bootstrap', timely:2, stopOnError:true}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <img id="editHead">
+                                <input type="file" id="headUp"  name="headUp[]" value="上传头像">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">班级</label>
+                                <input type="text" class="form-control" name="editClass" id="editClass">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">邮箱</label>
+                                <input type="text" class="form-control" name="editEmail" id="editEmail">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">简介</label>
+                                <textarea class="form-control" name="editBrief" id="editBrief" height="200px"></textarea>
+                            </div>
+                            <div class="hidden">
+                                <input type="hidden" name="headUpPic" id="headUpPic">
+                            </div>
+                            <div class="form-group">
+                                <a href="javascript:;" id="editSub" class="btn btn-primary">保存</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <!-- 修改密码-->
+                <div id="small-dialog7" class="mfp-hide">
+                    <h3>修改密码</h3>
+                    <div class="col-sm-12 col-md-6 col-md-offset-3 login1">
+                        <form id="rePwd" data-validator-option="{theme:'bootstrap', timely:2, stopOnError:true}" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="control-label">新密码</label>
+                                <input type="password" class="form-control" name="password2">
+                                <span class="msg-box" id="pwdMsg2"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">确认密码</label>
+                                <input type="password" class="form-control" name="pwdAgain2">
+                                <span class="msg-box" id="verMsg2"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="editSub2" class="btn btn-primary">保存</button>
+                            </div>
+                        </form>
                     </div>
                     <div class="clearfix"> </div>
                 </div>
@@ -406,14 +571,15 @@
             <ul class="cl-effect-2">
                 <switch name="Think.session.category">
                     <case value="3">
-                        <li><a href="__APP__/Home/Course/newCourse">我的选课</a></li>
+                        <li><a href="__APP__/Home/Course/myCourse?id={$Think.session.id}">我的选课</a></li>
                     </case>
                     <case value="2">
                         <li><a href="__APP__/Home/Course/newCourse">开设新课程</a></li>
-                        <li><a href="__APP__/Home/Course/myCourse?id={$Think.session.id}">我的教学</a></li>
+                        <li><a href="__APP__/Home/Course/manageCourse?status=-1&type=teacher&id={$Think.session.id}">我的教学</a></li>
                     </case>
                     <case value="1">
                         <li><a href="__APP__/Home/Course/manageCourse?status=0">审核课程</a></li>
+                        <li><a href="__APP__/Home/Course/question_import">上传题库</a></li>
                     </case>
                 </switch>
             </ul>
@@ -449,16 +615,6 @@
                 });
             });
         </script>
-        <!--<div class="side-bottom">
-            <div class="side-bottom-icons">
-                <ul class="nav2">
-                    <li><a href="#" class="facebook"> </a></li>
-                    <li><a href="#" class="facebook twitter"> </a></li>
-                    <li><a href="#" class="facebook chrome"> </a></li>
-                    <li><a href="#" class="facebook dribbble"> </a></li>
-                </ul>
-            </div>
-        </div>-->
     </div>
 </div>
 <!-- sidebar end-->

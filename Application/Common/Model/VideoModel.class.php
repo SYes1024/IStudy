@@ -104,4 +104,5 @@ class VideoModel extends Model
 
         return $result;
     }
+
 }

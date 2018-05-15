@@ -7,6 +7,7 @@
  */
 
 namespace Common\Logic;
+use Common\Model\ChooseModel;
 use Common\Model\CourseModel;
 
 class CourseLogic
@@ -37,26 +38,29 @@ class CourseLogic
      * @return array
      * 根据教师id查找课程,并三个一组进行分类
      */
-    public function findMyCourse($teacher_id = 0)
+    public function findMyCourse($type = 'teacher', $id = 0,$pass = -1)
     {
         $course = new CourseModel();
-        $result = $course->findByType('teacher', $teacher_id);
-
-        foreach ($result['result'] as $k => $v){   //转成提示
-            switch ($v['pass']){
-                case 0:
-                    $result['result'][$k]['pass'] = "待审核";
-                    break;
-                case 1:
-                    $result['result'][$k]['pass'] = "已通过";
-                    break;
-                case 2:
-                    $result['result'][$k]['pass'] = "未通过";
-                    break;
+        if($type == 'teacher'){
+            $result = $course->findByType($type , $id, $pass);
+            foreach ($result['result'] as $k => $v){   //转成提示
+                switch ($v['pass']){
+                    case 0:
+                        $result['result'][$k]['pass'] = "待审核";
+                        break;
+                    case 1:
+                        $result['result'][$k]['pass'] = "已通过";
+                        break;
+                    case 2:
+                        $result['result'][$k]['pass'] = "未通过";
+                        break;
+                }
             }
+        }else{
+            $result = $course->findByType($type, array(), -1, 8, 'choose.create_time desc','course.*,choose.create_time as ct,choose.student_id','choose on course.id=choose.course_id and choose.student_id='.$id);
+            $result['result'] = groupArr($result['result']);
         }
 
-        $result['result'] = groupArr($result['result']);
         return $result;
     }
 
@@ -193,5 +197,26 @@ class CourseLogic
         }else{
             return false;
         }
+    }
+
+    /**
+     * @param $course_id
+     * @return mixed
+     * 获得选课情况
+     */
+    public function getCourseSum($course_id)
+    {
+        $course = new CourseModel();
+        $res_course = $course->findOne($course_id);
+
+        $choose = new ChooseModel();
+        $res_choose = $choose->findWhoChoose($course_id);
+        $count = $choose->countChoose($course_id);
+
+        $result['course_name'] = $res_course['title'];
+        $result['choose'] = $res_choose;
+        $result['count'] = $count;
+
+        return $result;
     }
 }

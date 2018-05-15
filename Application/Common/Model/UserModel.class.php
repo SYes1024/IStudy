@@ -59,12 +59,13 @@ class UserModel extends RelationModel
      * @return mixed
      * 添加用户
      */
-    public function addUser($username, $password, $email="", $name="", $category=3, $brief="这个人很懒，什么都没有写")
+    public function addUser($username, $password, $email="", $name="",$class="", $category=3, $brief="这个人很懒，什么都没有写")
     {
         $data['username'] = $username;
         $data['password'] = $password;
         $data['email'] = $email;
         $data['name'] = $name;
+        $data['class'] = $class;
         $data['brief'] = $brief;
         $data['category'] = $category;
         $data['create_time'] = date('Y-m-d H:i:s', time());
@@ -103,5 +104,19 @@ class UserModel extends RelationModel
         $return['page'] = $pageShow;
 
         return $return;
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return bool
+     * 修改用户信息
+     */
+    public function editUser($id, $data)
+    {
+        $where['id'] = $id;
+        $result = M('User')->where($where)->data($data)->save();
+
+        return $result;
     }
 }

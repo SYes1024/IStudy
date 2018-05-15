@@ -1,6 +1,7 @@
 <extend name="Public:menu"/>
 <block name="head">
     <script src="__PUBLIC__/js/qrcode.min.js"></script>
+    <script src="__PUBLIC__/plugins/ifvisible.js/ifvisible.min.js"></script>
     <style>
         #qrcode{
             position: absolute;
@@ -107,9 +108,40 @@
             myVideo.addEventListener('pause',function(){
                 $('.video-ul-li').show();
             });
-//            $(window).beforeunload(function () {
-//                alert(111);
-//            });
+
+            //监听活跃状态
+            ifvisible.setIdleDuration(5);
+            ifvisible.idle(function(){
+                myVideo.pause();
+                alert("不在活跃状态！");
+            });
+
+            ifvisible.wakeup(function(){
+                myVideo.play();
+            });
+
+            var student_id = {$Think.session.id};
+            var course_id = {$Think.get.course_id};
+            //播放完毕
+            myVideo.addEventListener("ended",function(){
+                toastr.success('恭喜您已经学完本视频，请勿关闭正在上传观看时间', 'OK');
+                $.ajax({
+                    url: "__APP__/Home/Video/addLearnTime",
+                    type: "get",
+                    async: true,
+                    data: {'time':Math.ceil(myVideo.currentTime/60),'student_id':student_id,'course_id':course_id},
+                    success: function (data) {
+                        if (data['code'] == 1) {
+                            toastr.success(data['msg'], 'OK');
+                                setTimeout(function () {
+                                    //window.location.reload();
+                                }, 2000);
+                        } else {
+                            toastr.error(data['msg'], 'ERROR');
+                        }
+                    }
+                });
+            })
 
             /**
              * 发表评论
@@ -182,7 +214,7 @@
                 <h1>{$video.title}</h1>
             </div>
             <div style="position: relative">
-                <video id="myvideo" src="/IStudy/Upload/video/4.mp4" controls class="myvideo" playsinline -webkit-playsinline>
+                <video id="myvideo" src="{$video.upload}" controls class="myvideo" playsinline -webkit-playsinline>
                 </video>
                 <ul class="video-ul" id="video-ul">
                     <li class="video-ul-li">
@@ -205,18 +237,33 @@
                 new QRCode(document.getElementById("qrcode"), {
                     text: now+"&user="+{$Think.session.id},
                     width:200,
-                    height:200
+                    height:200,
                 });
                 $("#mobile").hover(function () {
                     $("#qrcode").toggle();
-                })
+                });
+                $('#support').click(function () {
+                    var id = $(this).data('id');
+                    var num = $('#support span').html();
+                    $.get("__APP__/Home/Comment/zan?comment_id="+id,function(data,status){
+                        if (data['code'] == 1) {
+                            toastr.success(data['msg'], 'OK');
+                            setTimeout(function () {
+                                $('#support span').html(parseInt(num)+1);
+                                $("#support").addClass('disabled');
+                            }, 2000);
+                        } else {
+                            toastr.error(data['msg'], 'ERROR');
+                        }
+                    });
+                });
             });
         </script>
     <div class="row">
         <div class="col-sm-7">
             <ul class="video-menu">
             <li class="video-menu-item"><a class="active" href="javascript:void(0)" id="plMenu">评论</a></li>
-            <li class="video-menu-item"><a href="javascript:void(0)" id="qaMenu" class="">问答</a></li>
+            <!--<li class="video-menu-item"><a href="javascript:void(0)" id="qaMenu" class="">问答</a></li>-->
             </ul>
             <div style="display: block; padding-top: 24px;">
                 <form id="comment">
@@ -242,7 +289,7 @@
                                 <div class="li-main-content">{$v['content']}</div>
                                 <div class="li-main-btm clearfix">
                                     <span style="float: left;">{$v['create_time']}</span>
-                                    <a style="float: right;" href="javascript:void(0)"><i class="glyphicon glyphicon-thumbs-up"></i><span>{$v['support_num']}</span></a>
+                                    <a style="float: right;" href="javascript:void(0)" id="support" data-id="{$v['id']}" class="btn"><i class="glyphicon glyphicon-thumbs-up" ></i><span>{$v['support_num']}</span></a>
                                 </div>
                             </div>
                         </li>
@@ -256,17 +303,8 @@
                 <h3>学霸榜</h3>
                 <ul>
                     <volist name="studyRank" id="v">
-                        <li>{$v.name}   学习时长：{$v.totaltime}小时</li>
+                        <li>{$v.name}   学习时长：{$v['totaltime']}小时</li>
                     </volist>
-                </ul>
-            </div>
-            <div>
-                <h3>名师榜</h3>
-                <ul>
-                    <li>名字   获得称赞：2221个</li>
-                    <li>名字   获得称赞：2211个</li>
-                    <li>名字   获得称赞：2121个</li>
-                    <li>名字   获得称赞：1221个</li>
                 </ul>
             </div>
         </div>

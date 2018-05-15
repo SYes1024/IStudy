@@ -47,13 +47,13 @@ class UserLogic
      * @return int
      * 添加学生账号
      */
-    public function addStu($username, $password, $email="", $name)
+    public function addStu($username, $password, $email="", $name = "",$class, $category = 3)
     {
         $user = new UserModel();
         if($user->findByUser($username)){
             return -1;//用户名存在
         }else{
-            $result = $user->addUser($username, $password, $email, $name);
+            $result = $user->addUser($username, $password, $email, $name,$class, $category);
             if($result)
                 return 1;//添加成功
             else
@@ -96,5 +96,23 @@ class UserLogic
         $result = $user->findAllTeacher($num);
 
         return $result;
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return bool
+     * 修改用户信息
+     */
+    public function editUser($id ,$data)
+    {
+        $user = new UserModel();
+        $result = $user->editUser($id ,$data);
+
+        if($result !== false){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

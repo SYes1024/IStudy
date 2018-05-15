@@ -48,4 +48,11 @@ class CommentModel extends RelationModel
 
         return $return;
     }
+
+    public function addZan($id)
+    {
+        $where['id'] = $id;
+        $result = M('Comment')->where($where)->setInc('support_num');
+        return $result;
+    }
 }

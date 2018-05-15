@@ -119,14 +119,11 @@
                 <div class="detail-text">
                     <if condition="($Think.session.category gt '') AND (($Think.session.category lt 3) AND (($Think.session.id eq $result['teacher_id']) OR ($Think.session.category eq 1)))">
                         {/* session不为空，不是学生，老师自己的课,或者是管理员*/}
-                        <a href="__APP__/Home/Course/newCourse?id={$result.id}" class="btn btn-danger" style="padding: 8px 10px;">
-                            编辑
-                        </a>
                         <a href="__APP__/Home/Course/getSum?id={$result.id}" class="btn btn-success" style="padding: 8px 10px;">
                             选课情况
                         </a>
                         <a href="__APP__/Home/Video/newVideo?id={$result.id}" class="btn btn-primary" style="padding: 8px 10px;">
-                            上传视频
+                            视频管理
                         </a>
                     <else/>
                         <eq name="result.class" value="无">
@@ -142,15 +139,15 @@
                                 <button class="btn btn-success " style="padding: 8px 30px;pointer-events: none;cursor: not-allowed;">
                                     已报名
                                 </button>
-                                <a id="test" href="javascript:;" class="btn btn-warning " style="padding: 8px 30px;">
+                                <a href="__APP__/Home/Course/getTest?id={$Think.get.id}" class="btn btn-warning " style="padding: 8px 30px;">
                                     开始测试
                                 </a>
                                 <script>
-                                    $(function () {
-                                        $("#test").click(function () {
-                                            toastr.warning('功能正在建设中...','SORRY');
-                                        });
-                                    })
+//                                    $(function () {
+//                                        $("#test").click(function () {
+//                                            toastr.warning('功能正在建设中...','SORRY');
+//                                        });
+//                                    })
                                 </script>
                             </neq>
                             <else/>
@@ -167,15 +164,15 @@
                                     <button class="btn btn-success " style="padding: 8px 30px;pointer-events: none;cursor: not-allowed;">
                                         已报名
                                     </button>
-                                    <a id="test" href="javascript:;" class="btn btn-warning " style="padding: 8px 30px;">
+                                    <a id="test" href="__APP__/Home/Course/getTest?id={$Think.get.id}" class="btn btn-warning " style="padding: 8px 30px;">
                                         开始测试
                                     </a>
                                     <script>
-                                        $(function () {
-                                            $("#test").click(function () {
-                                                toastr.warning('功能正在建设中...','SORRY');
-                                            });
-                                        })
+//                                        $(function () {
+//                                            $("#test").click(function () {
+//                                                toastr.warning('功能正在建设中...','SORRY');
+//                                            });
+//                                        })
                                     </script>
                                 </neq>
                                 <else/>
@@ -219,7 +216,7 @@
                 </div>
                 <div class="row course-content-main hidden" id="study" >
                     <volist name="result['video']" id="v" key="k" empty="暂未上传视频">
-                        <a href="__APP__/Home/Video/play?id={$v.id}" type="button" class="col-sm-3 col-xs-12 btn btn-default " style="margin: 3px 0px;overflow: hidden" title="{$v.title}">{$v.title}</a>
+                        <a href="__APP__/Home/Video/play?course_id={$Think.get.id}&id={$v.id}" type="button" class="col-sm-3 col-xs-12 btn btn-default " style="margin: 3px 0px;overflow: hidden" title="{$v.title}">{$v.title}</a>
                     </volist>
                 </div>
             </div>

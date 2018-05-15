@@ -8,6 +8,7 @@
 
 namespace Common\Logic;
 
+use Common\Model\ChooseModel;
 use Common\Model\VideoModel;
 use Think\Model\ViewModel;
 
@@ -100,6 +101,25 @@ class VideoLogic
     {
         $course = new VideoModel();
         $result = $course->verifyCourse($id,$status,$reason);
+
+        if($result !== false){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * @param $time
+     * @param $student_id
+     * @param $course_id
+     * @return bool
+     * 添加学习时长
+     */
+    public function addLearnTime($time,$student_id,$course_id)
+    {
+        $choose = new ChooseModel();
+        $result = $choose->addLearnTime($time,$student_id,$course_id);
 
         if($result !== false){
             return true;
